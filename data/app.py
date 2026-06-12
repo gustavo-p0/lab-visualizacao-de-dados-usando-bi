@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import numpy as np
 import os
 
 BASE = os.path.dirname(os.path.abspath(__file__))
@@ -315,6 +316,13 @@ with tab3:
             color_discrete_map={'Pública': '#1f77b4', 'Privada': '#ff7f0e'},
             labels={'Matemática': 'Matemática', 'Ciências da Natureza': 'Ciências da Natureza'}
         )
+        for tipo, cor in [('Pública', '#1f77b4'), ('Privada', '#ff7f0e')]:
+            sub = df_sample[df_sample['Tipo de Escola']==tipo]
+            m, b = np.polyfit(sub['Matemática'], sub['Ciências da Natureza'], 1)
+            r24.add_shape(type='line',
+                x0=sub['Matemática'].min(), y0=m*sub['Matemática'].min()+b,
+                x1=sub['Matemática'].max(), y1=m*sub['Matemática'].max()+b,
+                line=dict(color=cor, width=2, dash='dash'))
         safe_chart(r24, 'r24')
     except Exception:
         st.warning('Gráfico R2.4 indisponível para este recorte.')
