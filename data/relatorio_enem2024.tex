@@ -327,36 +327,63 @@ A Figura~\ref{fig:r21} apresenta a matriz de correlação de Spearman entre as c
     \label{fig:r21}
 \end{figure}
 
-\subsubsection{R2.2 -- Diferença na Correlação: Privada vs. Pública}
+\subsubsection{R2.2 -- Correlações por Tipo de Escola}
 
-A Figura~\ref{fig:r22} mostra a diferença na correlação entre escolas privadas e públicas. Valores positivos (vermelho) indicam correlação mais forte na rede privada. Escolas privadas apresentam correlações substancialmente mais altas, especialmente entre Matemática e Ciências da Natureza (diferença de +0,25) e entre Matemática e Ciências Humanas (+0,19). Isso sugere que o ensino privado produz um perfil de desempenho mais homogêneo — alunos que vão bem em uma disciplina tendem a ir bem em todas.
+A Tabela~\ref{tab:corr_publica} e a Tabela~\ref{tab:corr_privada} apresentam as matrizes de correlação separadas por tipo de escola. As correlações na rede privada são sistematicamente mais altas, com destaque para Matemática $\times$ Ciências da Natureza (0,73 na privada vs. 0,49 na pública) e Matemática $\times$ Ciências Humanas (0,62 vs. 0,49). Esse padrão sugere que o ensino privado produz um perfil de desempenho mais homogêneo.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.65\textwidth]{r22}
-    \caption{Diferença na correlação: privada $-$ pública (R2.2)}
-    \label{fig:r22}
-\end{figure}
+\begin{table}[H]
+\centering
+\caption{Correlação (Spearman) — Escola Pública}
+\label{tab:corr_publica}
+\begin{tabular}{lccccc}
+\toprule
+ & CN & CH & LC & MT & Red \\
+\midrule
+CN & 1,00 & 0,54 & 0,54 & 0,49 & 0,35 \\
+CH & 0,54 & 1,00 & 0,57 & 0,49 & 0,51 \\
+LC & 0,54 & 0,57 & 1,00 & 0,46 & 0,52 \\
+MT & 0,49 & 0,49 & 0,46 & 1,00 & 0,45 \\
+Red & 0,35 & 0,51 & 0,52 & 0,45 & 1,00 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\subsubsection{R2.3 -- Dispersão: Redação vs. Nota Média}
+\begin{table}[H]
+\centering
+\caption{Correlação (Spearman) — Escola Privada}
+\label{tab:corr_privada}
+\begin{tabular}{lccccc}
+\toprule
+ & CN & CH & LC & MT & Red \\
+\midrule
+CN & 1,00 & 0,72 & 0,67 & 0,73 & 0,43 \\
+CH & 0,72 & 1,00 & 0,67 & 0,62 & 0,52 \\
+LC & 0,67 & 0,67 & 1,00 & 0,58 & 0,48 \\
+MT & 0,73 & 0,62 & 0,58 & 1,00 & 0,52 \\
+Red & 0,43 & 0,52 & 0,48 & 0,52 & 1,00 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-A Figura~\ref{fig:r23} apresenta a dispersão entre Redação e a nota média, segmentada por tipo de escola. A nuvem de pontos revela que, embora a correlação seja moderada (0,45--0,58), candidatos de escolas privadas concentram-se na região superior do gráfico (notas altas em ambos).
+\subsubsection{R2.3 -- Dispersão: Matemática vs. Redação}
+
+A Figura~\ref{fig:r23} apresenta a dispersão entre Matemática e Redação, as duas disciplinas mais distintas do ENEM. A correlação de Spearman é de apenas 0,54, a menor entre as objetivas e Redação. As linhas de tendência (OLS) confirmam que, embora a relação seja positiva, a variabilidade é alta — um mesmo desempenho em Matemática pode estar associado a notas muito diferentes em Redação.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{r23}
-    \caption{Redação vs. Nota Média por tipo de escola (R2.3)}
+    \caption{Matemática vs. Redação com linha de tendência (R2.3)}
     \label{fig:r23}
 \end{figure}
 
 \subsubsection{R2.4 -- Dispersão: Matemática vs. Ciências da Natureza}
 
-A Figura~\ref{fig:r24} mostra a forte correlação entre Matemática e Ciências da Natureza (0,61 no geral; 0,73 na rede privada). A diferença entre os dois segmentos é visualmente clara: na rede privada, a nuvem é mais alongada e concentrada, refletindo a maior consistência de desempenho.
+A Figura~\ref{fig:r24} mostra a correlação mais forte do ENEM: Matemática $\times$ Ciências da Natureza (0,61 no geral; 0,73 na privada vs. 0,49 na pública). As linhas de tendência deixam clara a diferença de inclinação entre os dois segmentos: na rede privada, o aumento em Matemática está associado a um aumento maior em CN.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{r24}
-    \caption{Matemática vs. Ciências da Natureza por tipo de escola (R2.4)}
+    \caption{Matemática vs. CN com linha de tendência por segmento (R2.4)}
     \label{fig:r24}
 \end{figure}
 

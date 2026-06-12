@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
+import numpy as np
 import os
 
 BASE = os.path.dirname(os.path.abspath(__file__))
@@ -260,52 +262,70 @@ with tab3:
 
     st.subheader('R2.1 — Matriz de Correlação (Spearman)')
     corr = df_filt[AREAS].corr(method='spearman').round(2)
-    corr_melt = corr.reset_index().melt(id_vars='index', var_name='Área', value_name='Correlação')
-    corr_melt.columns = ['Disciplina', 'Área', 'Correlação']
     r21 = px.imshow(
-        corr.values, x=corr.columns, y=corr.columns,
+        corr.values, x=list(corr.columns), y=list(corr.columns),
         color_continuous_scale='RdBu_r', text_auto='.2f', zmin=-1, zmax=1,
-        title='Correlação de Spearman entre Disciplinas'
+        title='Correlação de Spearman entre Disciplinas',
+        aspect='equal'
     )
     r21.update_layout(width=600, height=500)
     safe_chart(r21, 'r21')
 
-    st.subheader('R2.2 — Comparação: Escola Pública vs. Privada')
+    st.subheader('R2.2 — Correlações por Tipo de Escola')
     try:
-        corr_pub = df_filt[df_filt['Tipo de Escola']=='Pública'][AREAS].corr(method='spearman')
-        corr_priv = df_filt[df_filt['Tipo de Escola']=='Privada'][AREAS].corr(method='spearman')
-        diff = corr_priv - corr_pub
-        r22 = px.imshow(
-            diff.values, x=diff.columns, y=diff.columns,
-            color_continuous_scale='RdBu_r', text_auto='.3f', zmin=-0.3, zmax=0.3,
-            title='Diferença na Correlação (Privada − Pública)'
-        )
-        r22.update_layout(width=600, height=500)
-        safe_chart(r22, 'r22')
+        corr_pub = df_filt[df_filt['Tipo de Escola']=='Pública'][AREAS].corr(method='spearman').round(2)
+        corr_priv = df_filt[df_filt['Tipo de Escola']=='Privada'][AREAS].corr(method='spearman').round(2)
+        col_a, col_b = st.columns(2)
+        with col_a:
+            fig_pub = px.imshow(corr_pub.values, x=list(corr_pub.columns), y=list(corr_pub.columns),
+                color_continuous_scale='RdBu_r', text_auto='.2f', zmin=-1, zmax=1,
+                title='Pública', aspect='equal')
+            fig_pub.update_layout(width=300, height=400, margin=dict(l=40, r=40, t=40, b=40))
+            st.plotly_chart(fig_pub)
+        with col_b:
+            fig_priv = px.imshow(corr_priv.values, x=list(corr_priv.columns), y=list(corr_priv.columns),
+                color_continuous_scale='RdBu_r', text_auto='.2f', zmin=-1, zmax=1,
+                title='Privada', aspect='equal')
+            fig_priv.update_layout(width=300, height=400, margin=dict(l=40, r=40, t=40, b=40))
+            st.plotly_chart(fig_priv)
     except Exception:
         st.warning('Gráfico R2.2 indisponível para este recorte.')
 
-    st.subheader('R2.3 — Dispersão: Redação vs. Nota Média')
+    def add_ols(fig, x, y, label, color):
+        m, b = np.polyfit(x, y, 1)
+        xr = np.linspace(x.min(), x.max(), 100)
+        fig.add_trace(go.Scatter(x=xr, y=m*xr+b, mode='lines',
+            name=label, line=dict(color=color, width=2), showlegend=True))
+
+    st.subheader('R2.3 — Dispersão: Matemática vs. Redação')
     try:
         df_sample = df_filt.sample(10000)
+        xm, yr = df_sample['Matemática'].values, df_sample['Redação'].values
+        rho23 = np.corrcoef(xm, yr)[0, 1]
         r23 = px.scatter(
-            df_sample, x='Redação', y='Nota Média', color='Tipo de Escola',
-            opacity=0.3, title='Redação vs. Nota Média (amostra 10k)',
+            df_sample, x='Matemática', y='Redação', color='Tipo de Escola',
+            opacity=0.2,
+            title=f'Matemática vs. Redação — ρ = {rho23:.3f} (amostra 10k)',
             color_discrete_map={'Pública': '#1f77b4', 'Privada': '#ff7f0e'},
-            labels={'Redação': 'Redação', 'Nota Média': 'Nota Média'}
+            labels={'Matemática': 'Matemática', 'Redação': 'Redação'}
         )
+        add_ols(r23, xm, yr, 'Tendência', 'gray')
         safe_chart(r23, 'r23')
     except Exception:
         st.warning('Gráfico R2.3 indisponível para este recorte.')
 
     st.subheader('R2.4 — Dispersão: Matemática vs. Ciências da Natureza')
     try:
+        xm, ycn = df_sample['Matemática'].values, df_sample['Ciências da Natureza'].values
+        rho24 = np.corrcoef(xm, ycn)[0, 1]
         r24 = px.scatter(
             df_sample, x='Matemática', y='Ciências da Natureza', color='Tipo de Escola',
-            opacity=0.3, title='Matemática vs. Ciências da Natureza (amostra 10k)',
+            opacity=0.2,
+            title=f'Matemática vs. CN — ρ = {rho24:.3f} (amostra 10k)',
             color_discrete_map={'Pública': '#1f77b4', 'Privada': '#ff7f0e'},
             labels={'Matemática': 'Matemática', 'Ciências da Natureza': 'Ciências da Natureza'}
         )
+        add_ols(r24, xm, ycn, 'Tendência', 'gray')
         safe_chart(r24, 'r24')
     except Exception:
         st.warning('Gráfico R2.4 indisponível para este recorte.')
