@@ -61,7 +61,12 @@ def safe_chart(fig, key=None, **kwargs):
 
 with tab1:
     st.header('Caracterização dos Candidatos do ENEM 2024')
-    st.markdown('Visão geral do perfil dos candidatos presentes em todas as provas.')
+    st.markdown(
+        'Dos **~3,9 milhões** de participantes do ENEM 2024, restaram **~960 mil** após '
+        'remover treineiros, manter apenas quem compareceu a **todas as provas** e '
+        'teve **nota válida** em todas as áreas, além de filtrar apenas escolas '
+        'públicas e privadas (excluindo não informado).'
+    )
 
     col_k1, col_k2, col_k3, col_k4 = st.columns(4)
     total = len(df_filt)
