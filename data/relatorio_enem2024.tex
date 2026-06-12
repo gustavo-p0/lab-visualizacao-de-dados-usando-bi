@@ -316,25 +316,25 @@ O histograma sobreposto (Figura~\ref{fig:r14}) compara a distribuição da nota 
 
 \textbf{Pergunta:} Qual a relação entre a raça/cor autodeclarada e o desempenho dos candidatos no ENEM 2024?
 
-\subsubsection{R2.1 -- Nota Média Mediana por Raça/Cor}
+\subsubsection{R2.1 -- Desvio da Nota Média Mediana por Raça/Cor}
 
-A Figura~\ref{fig:r21} apresenta a mediana da nota média para cada categoria de raça/cor. A linha tracejada indica a mediana global da amostra (532,0). Observa-se que candidatos autodeclarados \textbf{Brancos} apresentam a maior mediana, enquanto \textbf{Pretos} e \textbf{Pardos} estão abaixo da mediana global, caracterizando um gradiente racial consistente.
+A Figura~\ref{fig:r21} apresenta o desvio da mediana de cada grupo racial em relação à mediana global da amostra (532,0). O gráfico de barras divergentes torna imediatamente visível quais grupos estão acima (verde) e abaixo (vermelho) da média geral. Candidatos \textbf{Brancos} apresentam o maior desvio positivo, enquanto \textbf{Pretos} e \textbf{Pardos} estão no lado negativo.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{r21}
-    \caption{Nota média mediana por raça/cor (R2.1)}
+    \caption{Desvio da nota média mediana por raça/cor (R2.1)}
     \label{fig:r21}
 \end{figure}
 
-\subsubsection{R2.2 -- Mediana por Área e Raça/Cor (Heatmap)}
+\subsubsection{R2.2 -- Mediana por Área e Raça/Cor (Facetas)}
 
-A Figura~\ref{fig:r22} apresenta um heatmap cruzando área de conhecimento e raça/cor. O gradiente de cor revela que candidatos \textbf{Brancos} e \textbf{Amarelos} têm medianas mais altas em todas as áreas, enquanto \textbf{Pretos} e \textbf{Pardos} concentram-se nas cores mais escuras (medianas menores). O padrão é consistente entre áreas, com Redação apresentando as maiores medianas para todos os grupos.
+A Figura~\ref{fig:r22} desagrega a análise por área de conhecimento, com cada faceta representando uma área. O padrão se repete: \textbf{Brancos} e \textbf{Amarelos} lideram em todas as áreas, enquanto \textbf{Pretos} e \textbf{Pardos} ficam nas posições inferiores. O gradiente é mais acentuado em Redação e Matemática.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\textwidth]{r22}
-    \caption{Mediana por área e raça/cor — heatmap (R2.2)}
+    \includegraphics[width=0.95\textwidth]{r22}
+    \caption{Mediana por área e raça/cor — facetas (R2.2)}
     \label{fig:r22}
 \end{figure}
 

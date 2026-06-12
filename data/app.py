@@ -258,33 +258,33 @@ with tab3:
     )
 
     COR_ORDER = ['Branca', 'Preta', 'Parda', 'Amarela', 'Indígena', 'Não declarado']
-    st.subheader('R2.1 — Nota Média Mediana por Raça/Cor')
+    st.subheader('R2.1 — Desvio da Nota Média Mediana por Raça/Cor')
     r21_data = df_filt.groupby('Raça/Cor', observed=True)['Nota Média'].median().reset_index()
     global_median = df_filt['Nota Média'].median()
+    r21_data['Desvio'] = r21_data['Nota Média'] - global_median
+    r21_data['Cor'] = r21_data['Desvio'].apply(lambda x: 'Acima da média' if x >= 0 else 'Abaixo da média')
     r21 = px.bar(
-        r21_data, x='Raça/Cor', y='Nota Média',
-        title='Nota Média Mediana por Raça/Cor',
-        color='Raça/Cor', text_auto='.1f',
-        category_orders={'Raça/Cor': COR_ORDER}
+        r21_data, x='Raça/Cor', y='Desvio', color='Cor',
+        title=f'Desvio da Nota Média Mediana em relação à Mediana Global ({global_median:.1f})',
+        text_auto='.1f',
+        category_orders={'Raça/Cor': COR_ORDER},
+        color_discrete_map={'Acima da média': '#2ca02c', 'Abaixo da média': '#d62728'}
     )
-    r21.update_layout(showlegend=False)
-    r21.add_hline(y=global_median, line_dash='dash', line_color='red',
-                  annotation_text=f'Mediana global: {global_median:.1f}',
-                  annotation_position='top right')
+    r21.update_layout(yaxis_title='Desvio (pontos)')
+    r21.add_hline(y=0, line_color='black', line_width=1)
     safe_chart(r21, 'r21')
 
     st.subheader('R2.2 — Mediana por Área e Raça/Cor')
     try:
         r22_data = df_filt.groupby('Raça/Cor', observed=True)[AREAS].median().reset_index()
         r22_long = r22_data.melt(id_vars='Raça/Cor', var_name='Área', value_name='Mediana')
-        r22 = px.density_heatmap(
-            r22_long, x='Raça/Cor', y='Área', z='Mediana',
-            color_continuous_scale='Viridis', text_auto='.0f',
-            title='Mediana por Área e Raça/Cor (heatmap)',
+        r22 = px.bar(
+            r22_long, x='Raça/Cor', y='Mediana', color='Raça/Cor',
+            facet_row='Área', title='Mediana por Área e Raça/Cor',
             category_orders={'Raça/Cor': COR_ORDER},
-            range_color=[r22_long['Mediana'].min() - 5, r22_long['Mediana'].max() + 5]
+            text_auto='.0f'
         )
-        r22.update_layout(xaxis_tickangle=-30)
+        r22.update_layout(showlegend=False, height=700)
         safe_chart(r22, 'r22')
     except Exception:
         st.warning('Gráfico R2.2 indisponível para este recorte.')
