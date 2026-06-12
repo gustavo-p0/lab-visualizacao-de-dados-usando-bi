@@ -259,6 +259,13 @@ with tab3:
         '**Pergunta:** Qual a relação entre a renda familiar mensal '
         'e o desempenho médio no ENEM 2024?'
     )
+    st.warning(
+        '**Limitação:** O ENEM possui 20 faixas de renda (Q006 A–T), mas o '
+        'pré-processamento deste projeto mapeou apenas **A** ("Nenhuma renda") e '
+        '**B** ("Até R$1.320"). As demais 18 faixas foram descartadas, '
+        'tornando a análise pouco informativa — os dois grupos têm perfil '
+        'socioeconômico quase idêntico e, de fato, as medianas são muito próximas.'
+    )
 
     st.subheader('R2.1 — Relação entre Renda Familiar e Nota Média (Mediana)')
     r21_data = df_filt.groupby('Renda Familiar', observed=True)['Nota Média'].median().reset_index()
