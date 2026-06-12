@@ -260,6 +260,7 @@ with tab3:
     COR_ORDER = ['Branca', 'Preta', 'Parda', 'Amarela', 'Indígena', 'Não declarado']
     st.subheader('R2.1 — Nota Média Mediana por Raça/Cor')
     r21_data = df_filt.groupby('Raça/Cor', observed=True)['Nota Média'].median().reset_index()
+    global_median = df_filt['Nota Média'].median()
     r21 = px.bar(
         r21_data, x='Raça/Cor', y='Nota Média',
         title='Nota Média Mediana por Raça/Cor',
@@ -267,17 +268,23 @@ with tab3:
         category_orders={'Raça/Cor': COR_ORDER}
     )
     r21.update_layout(showlegend=False)
+    r21.add_hline(y=global_median, line_dash='dash', line_color='red',
+                  annotation_text=f'Mediana global: {global_median:.1f}',
+                  annotation_position='top right')
     safe_chart(r21, 'r21')
 
     st.subheader('R2.2 — Mediana por Área e Raça/Cor')
     try:
         r22_data = df_filt.groupby('Raça/Cor', observed=True)[AREAS].median().reset_index()
         r22_long = r22_data.melt(id_vars='Raça/Cor', var_name='Área', value_name='Mediana')
-        r22 = px.bar(
-            r22_long, x='Área', y='Mediana', color='Raça/Cor',
-            barmode='group', title='Mediana por Área e Raça/Cor',
-            category_orders={'Raça/Cor': COR_ORDER}
+        r22 = px.density_heatmap(
+            r22_long, x='Raça/Cor', y='Área', z='Mediana',
+            color_continuous_scale='Viridis', text_auto='.0f',
+            title='Mediana por Área e Raça/Cor (heatmap)',
+            category_orders={'Raça/Cor': COR_ORDER},
+            range_color=[r22_long['Mediana'].min() - 5, r22_long['Mediana'].max() + 5]
         )
+        r22.update_layout(xaxis_tickangle=-30)
         safe_chart(r22, 'r22')
     except Exception:
         st.warning('Gráfico R2.2 indisponível para este recorte.')
