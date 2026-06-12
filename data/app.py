@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
-import numpy as np
 import os
 
 BASE = os.path.dirname(os.path.abspath(__file__))
@@ -291,17 +289,10 @@ with tab3:
     except Exception:
         st.warning('Gráfico R2.2 indisponível para este recorte.')
 
-    def add_ols(fig, x, y, label, color):
-        m, b = np.polyfit(x, y, 1)
-        xr = np.linspace(x.min(), x.max(), 100)
-        fig.add_trace(go.Scatter(x=xr, y=m*xr+b, mode='lines',
-            name=label, line=dict(color=color, width=2), showlegend=True))
-
     st.subheader('R2.3 — Dispersão: Matemática vs. Redação')
     try:
         df_sample = df_filt.sample(10000)
-        xm, yr = df_sample['Matemática'].values, df_sample['Redação'].values
-        rho23 = np.corrcoef(xm, yr)[0, 1]
+        rho23 = df_sample[['Matemática', 'Redação']].corr(method='spearman').iloc[0, 1]
         r23 = px.scatter(
             df_sample, x='Matemática', y='Redação', color='Tipo de Escola',
             opacity=0.2,
@@ -309,15 +300,14 @@ with tab3:
             color_discrete_map={'Pública': '#1f77b4', 'Privada': '#ff7f0e'},
             labels={'Matemática': 'Matemática', 'Redação': 'Redação'}
         )
-        add_ols(r23, xm, yr, 'Tendência', 'gray')
         safe_chart(r23, 'r23')
     except Exception:
         st.warning('Gráfico R2.3 indisponível para este recorte.')
 
     st.subheader('R2.4 — Dispersão: Matemática vs. Ciências da Natureza')
     try:
-        xm, ycn = df_sample['Matemática'].values, df_sample['Ciências da Natureza'].values
-        rho24 = np.corrcoef(xm, ycn)[0, 1]
+        df_sample = df_filt.sample(10000)
+        rho24 = df_sample[['Matemática', 'Ciências da Natureza']].corr(method='spearman').iloc[0, 1]
         r24 = px.scatter(
             df_sample, x='Matemática', y='Ciências da Natureza', color='Tipo de Escola',
             opacity=0.2,
@@ -325,7 +315,6 @@ with tab3:
             color_discrete_map={'Pública': '#1f77b4', 'Privada': '#ff7f0e'},
             labels={'Matemática': 'Matemática', 'Ciências da Natureza': 'Ciências da Natureza'}
         )
-        add_ols(r24, xm, ycn, 'Tendência', 'gray')
         safe_chart(r24, 'r24')
     except Exception:
         st.warning('Gráfico R2.4 indisponível para este recorte.')
