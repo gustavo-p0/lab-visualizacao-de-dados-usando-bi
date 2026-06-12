@@ -47,7 +47,7 @@ st.sidebar.metric('Candidatos selecionados', f'{len(df_filt):,}')
 tab1, tab2, tab3 = st.tabs([
     'Caracterização do Dataset',
     'RQ1 — Tipo de Escola vs. Desempenho',
-    'RQ2 — Raça/Cor vs. Desempenho'
+    'RQ2 — Região vs. Desempenho'
 ])
 
 def safe_chart(fig, key=None, **kwargs):
@@ -258,19 +258,27 @@ with tab3:
     )
 
     REG_ORDER = ['Norte', 'Nordeste', 'Centro-Oeste', 'Sudeste', 'Sul']
-    st.subheader('R2.1 — Nota Média Mediana por Região')
+    st.subheader('R2.1 — Desvio da Nota Média Mediana por Região')
     r21_data = df_filt.groupby('Região', observed=True)['Nota Média'].median().reset_index()
     global_med = df_filt['Nota Média'].median()
     r21_data['Desvio'] = r21_data['Nota Média'] - global_med
-    r21_data['Cor'] = r21_data['Desvio'].apply(lambda x: 'Acima' if x >= 0 else 'Abaixo')
-    r21 = px.bar(
-        r21_data, x='Região', y='Desvio', color='Cor',
-        title=f'Desvio da Nota Média Mediana por Região (global: {global_med:.1f})',
-        text_auto='.2f', category_orders={'Região': REG_ORDER},
-        color_discrete_map={'Acima': '#2ca02c', 'Abaixo': '#d62728'}
+    r21_data['Desvio'] = r21_data['Desvio'].round(2)
+    r21 = px.scatter(
+        r21_data, x='Região', y='Desvio',
+        title=f'Desvio da Mediana Global ({global_med:.1f}) por Região',
+        category_orders={'Região': REG_ORDER},
+        size=[20]*len(r21_data), color=[0]*len(r21_data),
     )
-    r21.update_layout(yaxis_title='Desvio (pontos)', showlegend=False)
+    r21.update_traces(marker=dict(color='steelblue', line=dict(color='steelblue', width=0)),
+                      showlegend=False)
     r21.add_hline(y=0, line_color='black', line_width=1)
+    r21.update_layout(yaxis_title='Desvio (pontos)')
+    # Add value labels
+    for _, row in r21_data.iterrows():
+        r21.add_annotation(x=row['Região'], y=row['Desvio'],
+                          text=f'{row["Desvio"]:+.2f}',
+                          showarrow=False, yshift=15 if row['Desvio'] >= 0 else -15,
+                          font=dict(size=11))
     safe_chart(r21, 'r21')
 
     st.subheader('R2.2 — Mediana por Área e Região')
