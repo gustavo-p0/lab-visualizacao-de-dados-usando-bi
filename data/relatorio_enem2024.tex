@@ -25,8 +25,8 @@
     citecolor=blue
 }
 
-\title{Análise dos Fatores Socioeconômicos e Demográficos\\
-Associados ao Desempenho no ENEM 2024 - Tipo de Escola, Escolaridade dos Pais e Perfil dos Candidatos}
+\title{Análise dos Fatores Associados ao Desempenho no ENEM 2024:\\
+Tipo de Escola, Escolaridade dos Pais e Perfil dos Candidatos}
 \author{Érica Alves dos Santos \and Gustavo Pimentel Carvalho Costa}
 \date{2026}
 
@@ -315,58 +315,78 @@ O histograma sobreposto (Figura~\ref{fig:r14}) compara a distribuição da nota 
 
 \textbf{Pergunta:} Qual a relação entre a escolaridade dos pais e o desempenho médio no ENEM 2024?
 
-Os microdados do ENEM 2024 incluem as variáveis Q001 (escolaridade do pai) e Q002 (escolaridade da mãe), com oito categorias cada: \textbf{Nunca estudou}, \textbf{Fundamental incompleto}, \textbf{Fundamental completo}, \textbf{Médio incompleto}, \textbf{Médio completo}, \textbf{Superior incompleto}, \textbf{Superior completo} e \textbf{Pós-graduação}.
+Os microdados do ENEM 2024 incluem as variáveis Q001 (escolaridade do pai) e Q002 (escolaridade da mãe), com oito categorias. A Tabela~\ref{tab:escolaridade} descreve cada categoria.
+
+\begin{table}[H]
+\centering
+\caption{Categorias de escolaridade dos pais (Q001/Q002)}
+\label{tab:escolaridade}
+\begin{tabular}{clr}
+\toprule
+\textbf{Código} & \textbf{Descrição} \\
+\midrule
+A & Nunca estudou \\
+B & Fundamental incompleto \\
+C & Fundamental completo \\
+D & Médio incompleto \\
+E & Médio completo \\
+F & Superior incompleto \\
+G & Superior completo \\
+H & Não informado \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsubsection{R2.1 -- Nota Média Mediana por Escolaridade dos Pais}
 
-A Figura~\ref{fig:r21} apresenta a mediana da nota média em função da escolaridade do pai e da mãe. Observa-se uma clara tendência ascendente: quanto maior a escolaridade dos pais, maior o desempenho médio dos candidatos.
+A Figura~\ref{fig:r21} apresenta a mediana da nota média para cada nível de escolaridade do pai e da mãe. Diferentemente do esperado com base na literatura educacional, não se observa uma tendência clara de crescimento da nota com o aumento da escolaridade parental. As medianas oscilam dentro de uma faixa muito estreita (menos de 2 pontos entre os extremos), indicando que, para este conjunto específico de candidatos, a escolaridade dos pais não é um fator discriminante do desempenho mediano.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{r21}
+    \includegraphics[width=0.85\textwidth]{r21}
     \caption{Nota média mediana por escolaridade dos pais (R2.1)}
     \label{fig:r21}
 \end{figure}
 
 \subsubsection{R2.2 -- Mediana por Área e Escolaridade do Pai}
 
-A Figura~\ref{fig:r22} desagrega a mediana das notas por área de conhecimento e escolaridade do pai. O padrão de crescimento é consistente em todas as áreas, com destaque para Matemática e Redação, que apresentam maior amplitude entre os extremos.
+A Figura~\ref{fig:r22} confirma o padrão para cada área de conhecimento individualmente: as medianas se mantêm praticamente constantes independentemente da escolaridade do pai, em todas as cinco áreas.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{r22}
+    \includegraphics[width=0.95\textwidth]{r22}
     \caption{Mediana por área e escolaridade do pai (R2.2)}
     \label{fig:r22}
 \end{figure}
 
 \subsubsection{R2.3 -- Mediana por Área e Escolaridade da Mãe}
 
-A Figura~\ref{fig:r23} mostra o mesmo recorte para a escolaridade da mãe. O padrão é semelhante ao paterno, indicando que a escolaridade de ambos os pais impacta positivamente o desempenho.
+O mesmo padrão se repete para a escolaridade da mãe (Figura~\ref{fig:r23}), reforçando a constatação de que, nesta amostra, o nível educacional dos pais não está associado a variações significativas no desempenho.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{r23}
+    \includegraphics[width=0.95\textwidth]{r23}
     \caption{Mediana por área e escolaridade da mãe (R2.3)}
     \label{fig:r23}
 \end{figure}
 
 \subsubsection{R2.4 -- Escolaridade do Pai vs. Mãe e Nota Média}
 
-A Figura~\ref{fig:r24} cruza a escolaridade do pai e da mãe em um heatmap, com a mediana da nota média como intensidade. A diagonal sugere que a combinação de pais com alta escolaridade produz os melhores resultados.
+O heatmap da Figura~\ref{fig:r24} cruza a escolaridade de ambos os pais. A ausência de um gradiente de cor pronunciado confirma a homogeneidade do desempenho entre todas as combinações de escolaridade parental.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{r24}
-    \caption{Heatmap: escolaridade do pai vs. mãe e nota média (R2.4)}
+    \includegraphics[width=0.85\textwidth]{r24}
+    \caption{Nota média mediana: escolaridade do pai vs. mãe (R2.4)}
     \label{fig:r24}
 \end{figure}
 
-\textbf{Achados:}
+\textbf{Interpretação:}
 \begin{itemize}
-    \item Candidatos cujos pais têm pós-graduação apresentam mediana de nota média muito superior aos com pais que nunca estudaram, com diferença superior a 100 pontos tanto para o pai quanto para a mãe.
-    \item O efeito é monotônico: a cada aumento no nível de escolaridade dos pais, a nota média mediana se eleva.
-    \item A escolaridade da mãe mostra associação ligeiramente mais forte que a do pai nos níveis mais altos.
-    \item O padrão se mantém em todas as áreas de conhecimento, sendo mais acentuado em Matemática e Redação.
+    \item A mediana da nota média varia menos de 2 pontos entre os extremos de escolaridade, tanto para o pai quanto para a mãe, indicando que esta variável isoladamente não discrimina o desempenho neste conjunto de dados.
+    \item Esse resultado contrasta com a literatura educacional, que geralmente encontra correlação positiva entre escolaridade dos pais e desempenho escolar.
+    \item A explicação mais provável é o \textbf{viés de seleção} introduzido pelos filtros: ao manter apenas candidatos presentes em todas as provas e com notas válidas, selecionou-se um grupo intrinsecamente motivado, onde o background familiar perde poder preditivo.
+    \item Os 11,8\% de candidatos que não souberam informar a escolaridade do pai e os 4,3\% que não souberam a da mãe foram categorizados como ``Não informado'' e apresentam desempenho similar aos demais grupos.
 \end{itemize}
 
 % ----------------------------------------------------------
@@ -375,13 +395,15 @@ A Figura~\ref{fig:r24} cruza a escolaridade do pai e da mãe em um heatmap, com 
 
 \subsection{Síntese dos Achados}
 
-Os dados revelam que o tipo de escola é fortemente associado ao desempenho no ENEM 2024, com diferenças expressivas em todas as áreas do conhecimento. A escolaridade dos pais também apresenta forte associação com o desempenho, com efeito monotônico e consistente entre as áreas — quanto maior a escolaridade, maior a nota.
+Os dados revelam que o tipo de escola é fortemente associado ao desempenho no ENEM 2024, com diferenças expressivas em todas as áreas do conhecimento. A diferença mais acentuada ocorre em Redação (180 pontos de mediana) e Matemática (159 pontos), áreas tradicionalmente associadas a maior desigualdade educacional. Linguagens apresenta o menor gap (56 pontos), possivelmente por ser uma área mais dependente de habilidades transversais.
 
-A diferença mais acentuada ocorre em Redação (180 pontos de mediana) e Matemática (159 pontos), áreas tradicionalmente associadas a maior desigualdade educacional. Linguagens apresenta o menor gap (56 pontos), possivelmente por ser uma área mais dependente de habilidades transversais.
+Em contraste, a escolaridade dos pais (RQ2) não apresentou associação significativa com o desempenho nesta amostra. As medianas permanecem praticamente constantes em todos os níveis educacionais, indicando que os filtros aplicados — presença em todas as provas, exclusão de treineiros e notas válidas — produzem um grupo homogêneo onde o background familiar perde poder explicativo.
 
 \subsection{Relação entre RQ1 e RQ2}
 
-A análise conjunta revela que tanto o tipo de escola (RQ1) quanto a escolaridade dos pais (RQ2) estão fortemente associados ao desempenho. Embora as variáveis estejam correlacionadas — pais com maior escolaridade tendem a matricular seus filhos em escolas privadas —, o efeito da escola se mantém significativo mesmo quando controlado indiretamente pela escolaridade parental, indicando que a qualidade do ensino ofertado é um fator determinante.
+A comparação entre os resultados das duas questões de pesquisa revela uma assimetria importante: o tipo de escola (pública vs. privada) é um preditor robusto de desempenho, enquanto a escolaridade dos pais, surpreendentemente, não se mostra discriminante neste conjunto de dados.
+
+Esse resultado não implica que a escolaridade parental seja irrelevante para o desempenho educacional — a literatura especializada consistentemente mostra o contrário. A interpretação mais plausível é que o processo de filtragem dos dados (presença em todas as provas, exclusão de treineiros) atua como um controle implícito de motivação e engajamento, reduzindo a variabilidade associada a fatores socioeconômicos. Dentro desse grupo de candidatos igualmente comprometidos com o exame, a qualidade da escola frequentada emerge como o principal fator diferenciador.
 
 \subsection{Limitações}
 

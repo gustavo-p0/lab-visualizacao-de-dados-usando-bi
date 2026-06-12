@@ -11,7 +11,7 @@ ESCOLARIDADE_MAP = {
     'A': 'Nunca estudou', 'B': 'Fundamental incompleto',
     'C': 'Fundamental completo', 'D': 'Médio incompleto',
     'E': 'Médio completo', 'F': 'Superior incompleto',
-    'G': 'Superior completo', 'H': 'Pós-graduação',
+    'G': 'Superior completo', 'H': 'Não informado',
 }
 ORDEM_ESCOLARIDADE = list(ESCOLARIDADE_MAP.values())
 
