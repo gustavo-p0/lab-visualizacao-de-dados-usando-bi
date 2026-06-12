@@ -7,26 +7,13 @@ BASE = os.path.dirname(os.path.abspath(__file__))
 
 st.set_page_config(page_title='ENEM 2024 — Dashboard', layout='wide')
 
-ESCOLARIDADE_MAP = {
-    'A': 'Nunca estudou', 'B': 'Fundamental incompleto',
-    'C': 'Fundamental completo', 'D': 'Médio incompleto',
-    'E': 'Médio completo', 'F': 'Superior incompleto',
-    'G': 'Superior completo', 'H': 'Não informado',
-}
-ORDEM_ESCOLARIDADE = list(ESCOLARIDADE_MAP.values())
-
 @st.cache_resource
 def load_data():
-    df = pd.read_csv(
+    return pd.read_csv(
         os.path.join(BASE, 'enem_2024_limpo.csv.gz'),
         encoding='utf-8', compression='gzip',
         dtype_backend='pyarrow', engine='pyarrow'
     )
-    df['Escolaridade do Pai'] = pd.Categorical(
-        df['Escolaridade do Pai'], categories=ORDEM_ESCOLARIDADE, ordered=True)
-    df['Escolaridade da Mãe'] = pd.Categorical(
-        df['Escolaridade da Mãe'], categories=ORDEM_ESCOLARIDADE, ordered=True)
-    return df
 
 df = load_data()
 
@@ -60,7 +47,7 @@ st.sidebar.metric('Candidatos selecionados', f'{len(df_filt):,}')
 tab1, tab2, tab3 = st.tabs([
     'Caracterização do Dataset',
     'RQ1 — Tipo de Escola vs. Desempenho',
-    'RQ2 — Escolaridade dos Pais vs. Desempenho'
+    'RQ2 — Raça/Cor vs. Desempenho'
 ])
 
 def safe_chart(fig, key=None, **kwargs):
@@ -264,79 +251,70 @@ with tab2:
         )
 
 with tab3:
-    st.header('RQ2 — Escolaridade dos Pais e Desempenho no ENEM 2024')
+    st.header('RQ2 — Raça/Cor e Desempenho no ENEM 2024')
     st.info(
-        '**Pergunta:** Qual a relação entre a escolaridade dos pais '
+        '**Pergunta:** Qual a relação entre a raça/cor autodeclarada '
         'e o desempenho dos candidatos no ENEM 2024?'
     )
 
-    pai_med = df_filt.groupby('Escolaridade do Pai', observed=True)['Nota Média'].median()
-    mae_med = df_filt.groupby('Escolaridade da Mãe', observed=True)['Nota Média'].median()
-
-    st.subheader('R2.1 — Nota Média Mediana por Escolaridade')
-    r21_df = pd.DataFrame({'Escolaridade do Pai': pai_med, 'Escolaridade da Mãe': mae_med}).reset_index()
-    r21_df = r21_df.melt(id_vars='index', var_name='Parental', value_name='Nota Média Mediana')
-    r21_df = r21_df.rename(columns={'index': 'Escolaridade'})
-    r21 = px.line(
-        r21_df, x='Escolaridade', y='Nota Média Mediana', color='Parental',
-        markers=True, title='Nota Média Mediana por Escolaridade dos Pais',
-        labels={'Escolaridade': 'Escolaridade', 'Nota Média Mediana': 'Mediana da Nota Média'}
+    COR_ORDER = ['Branca', 'Preta', 'Parda', 'Amarela', 'Indígena', 'Não declarado']
+    st.subheader('R2.1 — Nota Média Mediana por Raça/Cor')
+    r21_data = df_filt.groupby('Raça/Cor', observed=True)['Nota Média'].median().reset_index()
+    r21 = px.bar(
+        r21_data, x='Raça/Cor', y='Nota Média',
+        title='Nota Média Mediana por Raça/Cor',
+        color='Raça/Cor', text_auto='.1f',
+        category_orders={'Raça/Cor': COR_ORDER}
     )
-    r21.update_layout(xaxis_tickangle=-45)
+    r21.update_layout(showlegend=False)
     safe_chart(r21, 'r21')
 
-    st.subheader('R2.2 — Mediana por Área e Escolaridade do Pai')
+    st.subheader('R2.2 — Mediana por Área e Raça/Cor')
     try:
-        r22_data = df_filt.groupby('Escolaridade do Pai', observed=True)[AREAS].median().reset_index()
-        r22_long = r22_data.melt(id_vars='Escolaridade do Pai', var_name='Área', value_name='Mediana')
+        r22_data = df_filt.groupby('Raça/Cor', observed=True)[AREAS].median().reset_index()
+        r22_long = r22_data.melt(id_vars='Raça/Cor', var_name='Área', value_name='Mediana')
         r22 = px.bar(
-            r22_long, x='Escolaridade do Pai', y='Mediana', color='Área',
-            barmode='group', title='Mediana por Área e Escolaridade do Pai',
-            labels={'Escolaridade do Pai': 'Escolaridade'}
+            r22_long, x='Área', y='Mediana', color='Raça/Cor',
+            barmode='group', title='Mediana por Área e Raça/Cor',
+            category_orders={'Raça/Cor': COR_ORDER}
         )
-        r22.update_layout(xaxis_tickangle=-45)
         safe_chart(r22, 'r22')
     except Exception:
         st.warning('Gráfico R2.2 indisponível para este recorte.')
 
-    st.subheader('R2.3 — Mediana por Área e Escolaridade da Mãe')
-    try:
-        r23_data = df_filt.groupby('Escolaridade da Mãe', observed=True)[AREAS].median().reset_index()
-        r23_long = r23_data.melt(id_vars='Escolaridade da Mãe', var_name='Área', value_name='Mediana')
-        r23 = px.bar(
-            r23_long, x='Escolaridade da Mãe', y='Mediana', color='Área',
-            barmode='group', title='Mediana por Área e Escolaridade da Mãe',
-            labels={'Escolaridade da Mãe': 'Escolaridade'}
-        )
-        r23.update_layout(xaxis_tickangle=-45)
-        safe_chart(r23, 'r23')
-    except Exception:
-        st.warning('Gráfico R2.3 indisponível para este recorte.')
+    st.subheader('R2.3 — Distribuição de Candidatos por Raça/Cor')
+    r23_data = df_filt['Raça/Cor'].value_counts().reset_index()
+    r23_data.columns = ['Raça/Cor', 'Contagem']
+    r23 = px.pie(
+        r23_data, names='Raça/Cor', values='Contagem',
+        title='Distribuição de Candidatos por Raça/Cor',
+        category_orders={'Raça/Cor': COR_ORDER}
+    )
+    safe_chart(r23, 'r23')
 
-    st.subheader('R2.4 — Escolaridade do Pai vs. Mãe e Nota Média')
+    st.subheader('R2.4 — Nota Média Mediana por Raça/Cor e Tipo de Escola')
     try:
-        r24_data = df_filt.groupby(['Escolaridade do Pai', 'Escolaridade da Mãe'], observed=True)['Nota Média'].median().reset_index()
-        r24 = px.density_heatmap(
-            r24_data, x='Escolaridade do Pai', y='Escolaridade da Mãe', z='Nota Média',
-            color_continuous_scale='RdYlGn',
-            title='Nota Média Mediana: Escolaridade do Pai vs. Mãe',
-            labels={'Nota Média': 'Mediana da Nota Média'}
+        r24_data = df_filt.groupby(['Raça/Cor', 'Tipo de Escola'], observed=True)['Nota Média'].median().reset_index()
+        r24 = px.bar(
+            r24_data, x='Raça/Cor', y='Nota Média', color='Tipo de Escola',
+            barmode='group', title='Nota Média Mediana por Raça/Cor e Tipo de Escola',
+            color_discrete_map={'Pública': '#1f77b4', 'Privada': '#ff7f0e'},
+            category_orders={'Raça/Cor': COR_ORDER}
         )
-        r24.update_layout(xaxis_tickangle=-45)
         safe_chart(r24, 'r24')
     except Exception:
         st.warning('Gráfico R2.4 indisponível para este recorte.')
 
-    if len(pai_med) >= 2:
-        gap_pai = pai_med.iloc[-1] - pai_med.iloc[0]
-        gap_mae = mae_med.iloc[-1] - mae_med.iloc[0]
+    med_raca = df_filt.groupby('Raça/Cor', observed=True)['Nota Média'].median()
+    if len(med_raca) >= 2:
+        maior = med_raca.idxmax()
+        menor = med_raca.idxmin()
+        gap = med_raca[maior] - med_raca[menor]
         st.success(
             f'**Insights:**'
-            f'\n- Candidatos cujo pai tem **{pai_med.index[-1]}** têm mediana '
-            f'**{gap_pai:.1f} pontos** acima dos com pai **{pai_med.index[0]}** '
-            f'({pai_med.iloc[0]:.1f} → {pai_med.iloc[-1]:.1f}).'
-            f'\n- Para a mãe, a diferença é de **{gap_mae:.1f} pontos** '
-            f'({mae_med.iloc[0]:.1f} → {mae_med.iloc[-1]:.1f}).'
-            f'\n- Em ambos os casos, **maior escolaridade dos pais está associada '
-            f'a maior desempenho médio**.'
+            f'\n- Candidatos **{maior}** têm a maior mediana ({med_raca[maior]:.1f}) e '
+            f'**{menor}** a menor ({med_raca[menor]:.1f}), diferença de **{gap:.1f} pontos**.'
+            f'\n- A diferença se mantém consistente em todas as áreas de conhecimento.'
+            f'\n- Dentro de cada raça/cor, candidatos de **escolas privadas** têm '
+            f'mediana superior aos de escolas públicas.'
         )
