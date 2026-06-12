@@ -1,0 +1,442 @@
+% Relatório ENEM 2024 — Dashboard Interativo
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{pgfplots}
+
+\geometry{margin=3cm}
+\onehalfspacing
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    citecolor=blue
+}
+
+\title{Análise dos Fatores Socioeconômicos e Demográficos\\
+Associados ao Desempenho no ENEM 2024}
+\author{Érica Alves dos Santos \and Gustavo Pimentel Carvalho Costa}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+% ----------------------------------------------------------
+\section{Introdução}
+% ----------------------------------------------------------
+
+O Exame Nacional do Ensino Médio (ENEM) é a principal porta de entrada para o ensino superior no Brasil, utilizado por instituições públicas e privadas como mecanismo de seleção. Criado em 1998, o exame avalia o desempenho dos estudantes em cinco áreas do conhecimento: Ciências da Natureza, Ciências Humanas, Linguagens e Códigos, Matemática e Redação.
+
+O Brasil apresenta profundas desigualdades educacionais e socioeconômicas que se refletem nos resultados do ENEM. Estudantes de escolas privadas, com maior acesso a recursos educacionais, tendem a obter desempenho superior àqueles de escolas públicas. Da mesma forma, a renda familiar — que determina o acesso a cursinhos, materiais didáticos e tempo disponível para estudo — é um fator fortemente associado ao desempenho no exame.
+
+Este trabalho tem como objetivo analisar o perfil dos candidatos do ENEM 2024 e investigar a relação entre fatores socioeconômicos (tipo de escola e renda familiar) e o desempenho nas cinco áreas do conhecimento. A análise é conduzida por meio de um dashboard interativo desenvolvido com Streamlit e Plotly Express.
+
+O relatório está estruturado em quatro seções: (i) esta introdução; (ii) a metodologia e descrição da base de dados; (iii) os resultados organizados pelas duas questões de pesquisa; e (iv) a discussão dos achados, limitações e trabalhos futuros.
+
+% ----------------------------------------------------------
+\section{Metodologia e Descrição da Base de Dados}
+% ----------------------------------------------------------
+
+\subsection{Fonte dos Dados}
+
+Os microdados do ENEM 2024 foram obtidos junto ao INEP (Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira), disponibilizados publicamente no portal de dados abertos do governo federal.
+
+\subsection{Coleta e Estrutura Original}
+
+O conjunto bruto é composto por três arquivos CSV:
+
+\begin{itemize}
+    \item \textbf{PARTICIPANTES\_2024.csv}: 4.332.944 registros com dados demográficos e respostas ao questionário socioeconômico (38 colunas).
+    \item \textbf{RESULTADOS\_2024.csv}: 4.332.944 registros com as notas, presença e informações escolares (42 colunas).
+    \item \textbf{ITENS\_PROVA\_2024.csv}: 5.550 registros com metadados dos itens das provas.
+\end{itemize}
+
+Após a junção dos arquivos de participantes e resultados (merge por índice, uma vez que ambos possuem o mesmo número de linhas e não compartilham uma chave explícita), partiu-se de aproximadamente 4,33 milhões de inscrições.
+
+\subsection{Critérios de Filtragem}
+
+Foram aplicados os seguintes filtros, nesta ordem:
+
+\begin{enumerate}
+    \item \textbf{Remoção de treineiros} (IN\_TREINEIRO = 1): candidatos que realizaram a prova como treino, sem interesse em vagas, foram excluídos pois não representam o perfil típico de ingresso no ensino superior.
+    \item \textbf{Remoção de ausentes}: mantidos apenas candidatos presentes em todas as quatro provas objetivas (CN, CH, LC, MT). Ausentes em qualquer prova distorcem as análises comparativas.
+    \item \textbf{Remoção de candidatos sem informação de escola}: excluídos registros sem tipo de dependência administrativa da escola.
+    \item \textbf{Remoção de notas ausentes}: linhas com valores nulos em qualquer uma das cinco notas foram descartadas.
+\end{enumerate}
+
+\subsection{Volume Final}
+
+Após a filtragem, restaram \textbf{960.614 candidatos}, sendo 79,4\% de escolas públicas e 20,6\% de escolas privadas.
+
+\subsection{Variáveis Selecionadas}
+
+No total, foram selecionadas 17 variáveis originais mais 5 colunas derivadas, conforme descrito na Tabela~\ref{tab:variaveis}.
+
+\begin{table}[H]
+\centering
+\caption{Variáveis selecionadas para análise}
+\label{tab:variaveis}
+\begin{tabular}{ll}
+\toprule
+\textbf{Variável} & \textbf{Descrição} \\
+\midrule
+TP\_SEXO & Sexo do candidato (M/F) \\
+TP\_FAIXA\_ETARIA & Faixa etária codificada (1--20) \\
+TP\_COR\_RACA & Raça/cor autodeclarada \\
+TP\_DEPENDENCIA\_ADM\_ESC & Dependência administrativa da escola \\
+SG\_UF\_PROVA & Sigla da UF de realização da prova \\
+IN\_TREINEIRO & Indicador de treineiro \\
+TP\_PRESENCA\_CN/CH/LC/MT & Presença em cada prova \\
+NU\_NOTA\_CN/CH/LC/MT & Notas das provas objetivas (0--1000) \\
+NU\_NOTA\_REDACAO & Nota da redação (0--1000) \\
+Q001--Q002 & Escolaridade do pai e da mãe \\
+Q006 & Renda familiar mensal (A = nenhuma, B = até R\$ 1.320) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Colunas derivadas:
+\begin{itemize}
+    \item \textbf{Tipo de Escola}: Pública (Federal/Estadual/Municipal) ou Privada
+    \item \textbf{Sexo, Raça/Cor, Faixa Etária, Renda Familiar}: labels legíveis
+    \item \textbf{Região}: agrupamento das UFs em 5 regiões
+    \item \textbf{Nota Média}: média aritmética das 5 notas
+    \item \textbf{Acima de 600}: flag indicando nota $>$ 600 em pelo menos uma área
+\end{itemize}
+
+\subsection{Ferramenta de BI}
+
+O dashboard foi desenvolvido em Python 3.10+ utilizando:
+\begin{itemize}
+    \item \textbf{pandas} e \textbf{numpy} para processamento dos dados
+    \item \textbf{Streamlit} para a interface web interativa
+    \item \textbf{Plotly Express} para visualização de dados
+\end{itemize}
+
+\subsection{Medida de Tendência Central}
+
+Adotou-se a \textbf{mediana} como medida de tendência central em substituição à média. A escolha justifica-se pela distribuição assimétrica típica das notas do ENEM, onde a média é influenciada por valores extremos (notas muito baixas ou muito altas). A mediana, por ser robusta a outliers, oferece uma representação mais fiel do desempenho típico dos candidatos.
+
+\subsection{Gráficos de Caracterização (G1--G8)}
+
+Os gráficos abaixo caracterizam o perfil dos 960.614 candidatos analisados.
+
+\subsubsection{G1 -- Distribuição por Tipo de Escola}
+
+A Figura~\ref{fig:g1} mostra que 79,4\% dos candidatos são de escolas públicas e 20,6\% de escolas privadas.
+
+\begin{figure}[H]
+    \centering
+    \caption{Distribuição dos candidatos por tipo de escola (G1)}
+    \label{fig:g1}
+    \vspace{1cm}
+    \textit{(Inserir print do gráfico G1 -- pizza)}
+\end{figure}
+
+\subsubsection{G2 -- Distribuição por Raça/Cor}
+
+A maior parte dos candidatos declara-se parda ou branca, conforme a Figura~\ref{fig:g2}.
+
+\begin{figure}[H]
+    \centering
+    \caption{Distribuição dos candidatos por raça/cor (G2)}
+    \label{fig:g2}
+    \vspace{1cm}
+    \textit{(Inserir print do gráfico G2 -- barras horizontais)}
+\end{figure}
+
+\subsubsection{G3 -- Distribuição por Faixa Etária}
+
+A Figura~\ref{fig:g3} apresenta a concentração de candidatos na faixa dos 17 aos 25 anos.
+
+\begin{figure}[H]
+    \centering
+    \caption{Distribuição por faixa etária (G3)}
+    \label{fig:g3}
+    \vspace{1cm}
+    \textit{(Inserir print do gráfico G3 -- barras verticais)}
+\end{figure}
+
+\subsubsection{G4 -- Distribuição por Sexo}
+
+A Figura~\ref{fig:g4} mostra a proporção entre candidatos masculinos e femininos.
+
+\begin{figure}[H]
+    \centering
+    \caption{Distribuição por sexo (G4)}
+    \label{fig:g4}
+    \vspace{1cm}
+    \textit{(Inserir print do gráfico G4 -- pizza)}
+\end{figure}
+
+\subsubsection{G5 -- Candidatos por Região e Tipo de Escola}
+
+A Figura~\ref{fig:g5} segmenta os candidatos por região geográfica e tipo de escola.
+
+\begin{figure}[H]
+    \centering
+    \caption{Candidatos por região e tipo de escola (G5)}
+    \label{fig:g5}
+    \vspace{1cm}
+    \textit{(Inserir print do gráfico G5 -- barras agrupadas)}
+\end{figure}
+
+\subsubsection{G6 -- Candidatos por Estado}
+
+A Figura~\ref{fig:g6} lista os estados com maior número de candidatos.
+
+\begin{figure}[H]
+    \centering
+    \caption{Candidatos por estado (G6)}
+    \label{fig:g6}
+    \vspace{1cm}
+    \textit{(Inserir print do gráfico G6 -- barras horizontais)}
+\end{figure}
+
+\subsubsection{G7 -- Distribuição das Notas por Área}
+
+A Figura~\ref{fig:g7} apresenta a distribuição das notas em cada área, evidenciando a assimetria típica dos dados.
+
+\begin{figure}[H]
+    \centering
+    \caption{Distribuição das notas por área (G7)}
+    \label{fig:g7}
+    \vspace{1cm}
+    \textit{(Inserir print do gráfico G7 -- box plot)}
+\end{figure}
+
+\subsubsection{G8 -- Mediana por Área e Tipo de Escola}
+
+A Figura~\ref{fig:g8} compara as medianas entre escolas públicas e privadas.
+
+\begin{figure}[H]
+    \centering
+    \caption{Mediana por área e tipo de escola (G8)}
+    \label{fig:g8}
+    \vspace{1cm}
+    \textit{(Inserir print do gráfico G8 -- barras agrupadas)}
+\end{figure}
+
+% ----------------------------------------------------------
+\section{Resultados}
+% ----------------------------------------------------------
+
+\subsection{RQ1 -- Tipo de Escola e Desempenho}
+
+\textbf{Pergunta:} Como o tipo de escola (pública vs. privada) influencia o desempenho dos candidatos no ENEM 2024?
+
+\subsubsection{R1.1 -- Mediana por Área: Pública vs. Privada}
+
+A Figura~\ref{fig:r11} apresenta a mediana das notas em cada área. Candidatos de escolas privadas obtêm mediana superior em todas as áreas. A Tabela~\ref{tab:medianas} resume os valores.
+
+\begin{table}[H]
+\centering
+\caption{Mediana das notas por área e tipo de escola}
+\label{tab:medianas}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Área} & \textbf{Pública} & \textbf{Privada} & \textbf{Diferença} \\
+\midrule
+Ciências da Natureza & 464,7 & 555,4 & 90,7 \\
+Ciências Humanas     & 489,8 & 579,2 & 89,4 \\
+Linguagens           & 515,2 & 571,5 & 56,3 \\
+Matemática           & 470,8 & 630,0 & 159,2 \\
+Redação              & 620,0 & 800,0 & 180,0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \caption{Mediana por área: pública vs. privada (R1.1)}
+    \label{fig:r11}
+    \vspace{1cm}
+    \textit{(Inserir print do gráfico R1.1 -- barras agrupadas)}
+\end{figure}
+
+\subsubsection{R1.2 -- Distribuição das Notas: Pública vs. Privada}
+
+O box plot (Figura~\ref{fig:r12}) revela a dispersão das notas, evidenciando que escolas privadas apresentam maior variabilidade e medianas superiores.
+
+\begin{figure}[H]
+    \centering
+    \caption{Distribuição das notas: pública vs. privada (R1.2)}
+    \label{fig:r12}
+    \vspace{1cm}
+    \textit{(Inserir print do gráfico R1.2 -- box plot)}
+\end{figure}
+
+\subsubsection{R1.3 -- Percentual de Candidatos com Nota Acima de 600}
+
+A Tabela~\ref{tab:acima600} mostra o percentual de candidatos com nota superior a 600.
+
+\begin{table}[H]
+\centering
+\caption{Percentual de candidatos com nota $>$ 600 por área e tipo de escola}
+\label{tab:acima600}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Área} & \textbf{Pública} & \textbf{Privada} & \textbf{Diferença (p.p.)} \\
+\midrule
+Ciências da Natureza & 3,2\%  & 26,6\% & 23,4 \\
+Ciências Humanas     & 7,6\%  & 38,6\% & 31,0 \\
+Linguagens           & 5,2\%  & 28,1\% & 22,9 \\
+Matemática           & 16,3\% & 58,7\% & 42,4 \\
+Redação              & 50,6\% & 85,8\% & 35,2 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \caption{\% de candidatos com nota $>$ 600 (R1.3)}
+    \label{fig:r13}
+    \vspace{1cm}
+    \textit{(Inserir print do gráfico R1.3 -- barras agrupadas)}
+\end{figure}
+
+\subsubsection{R1.4 -- Distribuição da Nota Média Geral}
+
+O histograma sobreposto (Figura~\ref{fig:r14}) compara a distribuição da nota média geral.
+
+\begin{figure}[H]
+    \centering
+    \caption{Distribuição da nota média geral (R1.4)}
+    \label{fig:r14}
+    \vspace{1cm}
+    \textit{(Inserir print do gráfico R1.4 -- histograma)}
+\end{figure}
+
+\textbf{Achados:}
+\begin{itemize}
+    \item A maior diferença absoluta está em \textbf{Redação}, com 180,0 pontos de diferença na mediana.
+    \item A menor diferença está em \textbf{Linguagens}, com 56,3 pontos.
+    \item Em Matemática, a mediana de escolas privadas (630,0) supera a das públicas (470,8) em 159,2 pontos.
+    \item A diferença é consistente em todas as áreas, porém mais acentuada em Redação e Matemática.
+    \item Apenas 16,3\% dos candidatos de escolas públicas atingem nota acima de 600 em Matemática, contra 58,7\% das privadas.
+\end{itemize}
+
+\subsection{RQ2 -- Renda Familiar e Desempenho}
+
+\textbf{Pergunta:} Qual a relação entre a renda familiar mensal e o desempenho médio no ENEM 2024?
+
+\textbf{Observação importante:} No ENEM 2024, a variável Q006 (renda familiar) apresenta apenas duas categorias: \textbf{A} (nenhuma renda) e \textbf{B} (até R\$ 1.320). Isso limita a granularidade da análise, mas ainda permite comparar candidatos sem renda familiar declarada com aqueles de baixa renda.
+
+\subsubsection{R2.1 -- Relação entre Renda Familiar e Nota Média}
+
+A Figura~\ref{fig:r21} mostra a mediana da nota média para cada faixa de renda. A diferença entre as duas faixas é pequena.
+
+\begin{figure}[H]
+    \centering
+    \caption{Relação entre renda familiar e nota média (R2.1)}
+    \label{fig:r21}
+    \vspace{1cm}
+    \textit{(Inserir print do gráfico R2.1 -- linha)}
+\end{figure}
+
+\subsubsection{R2.2 -- Mediana por Área e Renda (Heatmap)}
+
+O heatmap (Figura~\ref{fig:r22}) mostra que a mediana das notas é praticamente estável entre as duas faixas de renda.
+
+\begin{figure}[H]
+    \centering
+    \caption{Mediana por área e faixa de renda (R2.2)}
+    \label{fig:r22}
+    \vspace{1cm}
+    \textit{(Inserir print do gráfico R2.2 -- heatmap)}
+\end{figure}
+
+\subsubsection{R2.3 -- Distribuição de Candidatos por Renda}
+
+A maioria dos candidatos (68,8\%) declarou não ter renda familiar (faixa A), enquanto 31,2\% declararam renda de até R\$ 1.320 (faixa B), conforme a Figura~\ref{fig:r23}.
+
+\begin{figure}[H]
+    \centering
+    \caption{Distribuição de candidatos por renda (R2.3)}
+    \label{fig:r23}
+    \vspace{1cm}
+    \textit{(Inserir print do gráfico R2.3 -- barras verticais)}
+\end{figure}
+
+\subsubsection{R2.4 -- Mediana por Renda e Tipo de Escola}
+
+A Figura~\ref{fig:r24} mostra a interação entre renda e tipo de escola. A Tabela~\ref{tab:rendaescola} apresenta os valores.
+
+\begin{table}[H]
+\centering
+\caption{Mediana da nota média por renda e tipo de escola}
+\label{tab:rendaescola}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Renda} & \textbf{Pública} & \textbf{Privada} \\
+\midrule
+Nenhuma renda    & 510,0 & 620,7 \\
+Até R\$ 1.320  & 509,3 & 620,4 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \caption{Mediana por renda e tipo de escola (R2.4)}
+    \label{fig:r24}
+    \vspace{1cm}
+    \textit{(Inserir print do gráfico R2.4 -- barras agrupadas)}
+\end{figure}
+
+\textbf{Achados:}
+\begin{itemize}
+    \item A mediana da nota média é praticamente idêntica entre as duas faixas de renda: 528,7 (nenhuma renda) e 528,4 (até R\$ 1.320).
+    \item O tipo de escola é um fator muito mais discriminante que a renda: dentro de cada faixa de renda, a diferença entre escolas públicas e privadas é de aproximadamente 110 pontos.
+    \item Candidatos de escolas privadas com nenhuma renda (620,7) têm desempenho muito superior a candidatos de escolas públicas com a mesma renda (510,0).
+\end{itemize}
+
+% ----------------------------------------------------------
+\section{Discussão}
+% ----------------------------------------------------------
+
+\subsection{Síntese dos Achados}
+
+Os dados revelam que o tipo de escola é fortemente associado ao desempenho no ENEM 2024, com diferenças expressivas em todas as áreas do conhecimento. A renda familiar, na forma como foi capturada neste ano (apenas duas faixas), apresenta baixa capacidade discriminatória quando analisada isoladamente.
+
+A diferença mais acentuada ocorre em Redação (180 pontos de mediana) e Matemática (159 pontos), áreas tradicionalmente associadas a maior desigualdade educacional. Linguagens apresenta o menor gap (56 pontos), possivelmente por ser uma área mais dependente de habilidades transversais.
+
+\subsection{Relação entre RQ1 e RQ2}
+
+A análise conjunta de renda e tipo de escola (R2.4) revela que, dentro de cada faixa de renda, a diferença entre escolas públicas e privadas se mantém elevada (cerca de 110 pontos na nota média). Isso sugere que o tipo de escola é um fator preditor mais forte que a renda \textit{per se}, embora as duas variáveis estejam correlacionadas: candidatos de escolas privadas tendem a pertencer a faixas de renda mais altas (quando mais faixas estivessem disponíveis).
+
+\subsection{Limitações}
+
+\begin{itemize}
+    \item \textbf{Viés de seleção}: a análise considera apenas candidatos presentes em todas as provas, excluindo ausentes que podem ter perfil sistematicamente diferente.
+    \item \textbf{Renda autodeclarada}: a variável Q006 é auto-reportada e, no ENEM 2024, apresenta apenas duas categorias, limitando a análise de desigualdade de renda.
+    \item \textbf{Correlação $\neq$ causalidade}: os resultados indicam associações, não relações de causa e efeito.
+    \item \textbf{Cobertura}: o ENEM não abrange toda a população jovem brasileira — há evasão escolar e candidatos que optam por não realizar o exame.
+\end{itemize}
+
+\subsection{Trabalhos Futuros}
+
+\begin{itemize}
+    \item Análise longitudinal comparando edições do ENEM ao longo dos anos para identificar tendências.
+    \item Modelagem preditiva de desempenho utilizando regressão múltipla ou algoritmos de machine learning.
+    \item Inclusão de variáveis adicionais como escolaridade dos pais (Q001, Q002) para análise multivariada.
+    \item Análise por raça/cor interseccionada com renda e tipo de escola para investigar desigualdades estruturais.
+    \item Comparação com edições anteriores do ENEM que possuíam mais faixas de renda, permitindo análise mais granular.
+\end{itemize}
+
+\end{document}
