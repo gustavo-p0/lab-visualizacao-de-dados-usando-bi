@@ -128,7 +128,7 @@ with tab1:
     st.plotly_chart(g6, width='stretch')
 
     st.subheader('G7 — Distribuição das Notas por Área')
-    df_long = df_filt.melt(
+    df_long = df_filt.sample(min(50000, len(df_filt))).melt(
         id_vars=['Tipo de Escola'],
         value_vars=AREAS,
         var_name='Área', value_name='Nota'
@@ -210,8 +210,8 @@ with tab2:
 
     st.subheader('R1.4 — Distribuição da Nota Média Geral por Tipo de Escola')
     r14 = px.histogram(
-        df_filt, x='Nota Média', color='Tipo de Escola',
-        opacity=0.5, barmode='overlay', nbins=80,
+        df_filt.sample(min(50000, len(df_filt))), x='Nota Média', color='Tipo de Escola',
+        opacity=0.5, barmode='overlay', nbins=50,
         title='Distribuição da Nota Média Geral: Pública vs. Privada',
         color_discrete_map={'Pública': '#1f77b4', 'Privada': '#ff7f0e'},
         labels={'Nota Média': 'Nota Média Geral', 'count': 'Frequência'}
