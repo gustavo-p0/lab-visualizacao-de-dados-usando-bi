@@ -26,7 +26,7 @@
 }
 
 \title{Análise dos Fatores Socioeconômicos e Demográficos\\
-Associados ao Desempenho no ENEM 2024}
+Associados ao Desempenho no ENEM 2024 - Tipo de Escola, Escolaridade dos Pais e Perfil dos Candidatos}
 \author{Érica Alves dos Santos \and Gustavo Pimentel Carvalho Costa}
 \date{2026}
 
@@ -42,9 +42,9 @@ Associados ao Desempenho no ENEM 2024}
 
 O Exame Nacional do Ensino Médio (ENEM) é a principal porta de entrada para o ensino superior no Brasil, utilizado por instituições públicas e privadas como mecanismo de seleção. Criado em 1998, o exame avalia o desempenho dos estudantes em cinco áreas do conhecimento: Ciências da Natureza, Ciências Humanas, Linguagens e Códigos, Matemática e Redação.
 
-O Brasil apresenta profundas desigualdades educacionais e socioeconômicas que se refletem nos resultados do ENEM. Estudantes de escolas privadas, com maior acesso a recursos educacionais, tendem a obter desempenho superior àqueles de escolas públicas. Da mesma forma, a renda familiar — que determina o acesso a cursinhos, materiais didáticos e tempo disponível para estudo — é um fator fortemente associado ao desempenho no exame.
+O Brasil apresenta profundas desigualdades educacionais e socioeconômicas que se refletem nos resultados do ENEM. Estudantes de escolas privadas, com maior acesso a recursos educacionais, tendem a obter desempenho superior àqueles de escolas públicas. Da mesma forma, a escolaridade dos pais — que influencia o capital cultural e o suporte educacional disponível em casa — é um fator fortemente associado ao desempenho no exame.
 
-Este trabalho tem como objetivo analisar o perfil dos candidatos do ENEM 2024 e investigar a relação entre fatores socioeconômicos (tipo de escola e renda familiar) e o desempenho nas cinco áreas do conhecimento. A análise é conduzida por meio de um dashboard interativo desenvolvido com Streamlit e Plotly Express.
+Este trabalho tem como objetivo analisar o perfil dos candidatos do ENEM 2024 e investigar a relação entre fatores socioeconômicos (tipo de escola e escolaridade dos pais) e o desempenho nas cinco áreas do conhecimento. A análise é conduzida por meio de um dashboard interativo desenvolvido com Streamlit e Plotly Express.
 
 O relatório está estruturado em quatro seções: (i) esta introdução; (ii) a metodologia e descrição da base de dados; (iii) os resultados organizados pelas duas questões de pesquisa; e (iv) a discussão dos achados, limitações e trabalhos futuros.
 
@@ -104,8 +104,7 @@ IN\_TREINEIRO & Indicador de treineiro \\
 TP\_PRESENCA\_CN/CH/LC/MT & Presença em cada prova \\
 NU\_NOTA\_CN/CH/LC/MT & Notas das provas objetivas (0--1000) \\
 NU\_NOTA\_REDACAO & Nota da redação (0--1000) \\
-Q001--Q002 & Escolaridade do pai e da mãe \\
-Q006 & Renda familiar mensal (A = nenhuma, B = até R\$ 1.320) \\
+Q001--Q002 & Escolaridade do pai e da mãe (8 níveis: Nunca estudou até Pós-graduação) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -113,7 +112,7 @@ Q006 & Renda familiar mensal (A = nenhuma, B = até R\$ 1.320) \\
 Colunas derivadas:
 \begin{itemize}
     \item \textbf{Tipo de Escola}: Pública (Federal/Estadual/Municipal) ou Privada
-    \item \textbf{Sexo, Raça/Cor, Faixa Etária, Renda Familiar}: labels legíveis
+    \item \textbf{Sexo, Raça/Cor, Faixa Etária, Escolaridade dos Pais}: labels legíveis
     \item \textbf{Região}: agrupamento das UFs em 5 regiões
     \item \textbf{Nota Média}: média aritmética das 5 notas
     \item \textbf{Acima de 600}: flag indicando nota $>$ 600 em pelo menos uma área
@@ -316,7 +315,7 @@ O histograma sobreposto (Figura~\ref{fig:r14}) compara a distribuição da nota 
 
 \textbf{Pergunta:} Qual a relação entre a escolaridade dos pais e o desempenho médio no ENEM 2024?
 
-Os microdados do ENEM 2024 incluem as variáveis Q001 (escolaridade do pai) e Q002 (escolaridade da mãe), com oito categorias cada: \textbf{Nunca estudou}, \textbf{Fundamental incompleto}, \textbf{Fundamental completo}, \textbf{Médio incompleto}, \textbf{Médio completo}, \textbf{Superior incompleto}, \textbf{Superior completo} e \textbf{Pós-graduação}. Essa variável substitui a análise de renda familiar (Q006), que neste ano continha apenas duas faixas.
+Os microdados do ENEM 2024 incluem as variáveis Q001 (escolaridade do pai) e Q002 (escolaridade da mãe), com oito categorias cada: \textbf{Nunca estudou}, \textbf{Fundamental incompleto}, \textbf{Fundamental completo}, \textbf{Médio incompleto}, \textbf{Médio completo}, \textbf{Superior incompleto}, \textbf{Superior completo} e \textbf{Pós-graduação}.
 
 \subsubsection{R2.1 -- Nota Média Mediana por Escolaridade dos Pais}
 
