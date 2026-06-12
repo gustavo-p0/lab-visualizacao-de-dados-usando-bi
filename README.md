@@ -35,6 +35,7 @@ data/
 ## Como rodar
 
 ```bash
+cd data
 pip install -r requirements.txt
 streamlit run app.py
 ```
@@ -57,6 +58,7 @@ Três abas principais:
 O relatório `relatorio_enem2024.pdf` foi gerado via LaTeX (XeLaTeX) e contém análise textual aprofundada, tabelas de mediana e distribuição de notas.
 
 ```bash
+cd data
 xelatex relatorio_enem2024.tex
 ```
 
