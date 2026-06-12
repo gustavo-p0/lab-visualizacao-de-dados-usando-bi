@@ -87,11 +87,28 @@ df['Faixa Etária'] = df['TP_FAIXA_ETARIA'].map({
     19: '66–70', 20: '>70'
 })
 
+ESCOLARIDADE_MAP = {
+    'A': 'Nunca estudou',
+    'B': 'Fundamental incompleto',
+    'C': 'Fundamental completo',
+    'D': 'Médio incompleto',
+    'E': 'Médio completo',
+    'F': 'Superior incompleto',
+    'G': 'Superior completo',
+    'H': 'Pós-graduação',
+}
+ORDEM_ESCOLARIDADE = list(ESCOLARIDADE_MAP.values())
+
+df['Escolaridade do Pai'] = df['Q001'].map(ESCOLARIDADE_MAP)
+df['Escolaridade do Pai'] = pd.Categorical(df['Escolaridade do Pai'], categories=ORDEM_ESCOLARIDADE, ordered=True)
+
+df['Escolaridade da Mãe'] = df['Q002'].map(ESCOLARIDADE_MAP)
+df['Escolaridade da Mãe'] = pd.Categorical(df['Escolaridade da Mãe'], categories=ORDEM_ESCOLARIDADE, ordered=True)
+
 df['Renda Familiar'] = df['Q006'].map({
     'A': 'Nenhuma renda',
     'B': 'Até R$1.320'
 })
-
 ORDEM_RENDA = ['Nenhuma renda', 'Até R$1.320']
 df['Renda Familiar'] = pd.Categorical(df['Renda Familiar'], categories=ORDEM_RENDA, ordered=True)
 

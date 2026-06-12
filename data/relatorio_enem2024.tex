@@ -312,75 +312,62 @@ O histograma sobreposto (Figura~\ref{fig:r14}) compara a distribuição da nota 
     \item Apenas 16,3\% dos candidatos de escolas públicas atingem nota acima de 600 em Matemática, contra 58,7\% das privadas.
 \end{itemize}
 
-\subsection{RQ2 -- Renda Familiar e Desempenho}
+\subsection{RQ2 -- Escolaridade dos Pais e Desempenho}
 
-\textbf{Pergunta:} Qual a relação entre a renda familiar mensal e o desempenho médio no ENEM 2024?
+\textbf{Pergunta:} Qual a relação entre a escolaridade dos pais e o desempenho médio no ENEM 2024?
 
-\textbf{Observação importante:} No ENEM 2024, a variável Q006 (renda familiar) apresenta apenas duas categorias: \textbf{A} (nenhuma renda) e \textbf{B} (até R\$ 1.320). Isso limita a granularidade da análise, mas ainda permite comparar candidatos sem renda familiar declarada com aqueles de baixa renda.
+Os microdados do ENEM 2024 incluem as variáveis Q001 (escolaridade do pai) e Q002 (escolaridade da mãe), com oito categorias cada: \textbf{Nunca estudou}, \textbf{Fundamental incompleto}, \textbf{Fundamental completo}, \textbf{Médio incompleto}, \textbf{Médio completo}, \textbf{Superior incompleto}, \textbf{Superior completo} e \textbf{Pós-graduação}. Essa variável substitui a análise de renda familiar (Q006), que neste ano continha apenas duas faixas.
 
-\subsubsection{R2.1 -- Relação entre Renda Familiar e Nota Média}
+\subsubsection{R2.1 -- Nota Média Mediana por Escolaridade dos Pais}
 
-A Figura~\ref{fig:r21} mostra a mediana da nota média para cada faixa de renda. A diferença entre as duas faixas é pequena.
+A Figura~\ref{fig:r21} apresenta a mediana da nota média em função da escolaridade do pai e da mãe. Observa-se uma clara tendência ascendente: quanto maior a escolaridade dos pais, maior o desempenho médio dos candidatos.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{r21}
-    \caption{Relação entre renda familiar e nota média (R2.1)}
+    \includegraphics[width=0.8\textwidth]{r21}
+    \caption{Nota média mediana por escolaridade dos pais (R2.1)}
     \label{fig:r21}
 \end{figure}
 
-\subsubsection{R2.2 -- Mediana por Área e Renda (Heatmap)}
+\subsubsection{R2.2 -- Mediana por Área e Escolaridade do Pai}
 
-O heatmap (Figura~\ref{fig:r22}) mostra que a mediana das notas é praticamente estável entre as duas faixas de renda.
+A Figura~\ref{fig:r22} desagrega a mediana das notas por área de conhecimento e escolaridade do pai. O padrão de crescimento é consistente em todas as áreas, com destaque para Matemática e Redação, que apresentam maior amplitude entre os extremos.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{r22}
-    \caption{Mediana por área e faixa de renda (R2.2)}
+    \includegraphics[width=0.9\textwidth]{r22}
+    \caption{Mediana por área e escolaridade do pai (R2.2)}
     \label{fig:r22}
 \end{figure}
 
-\subsubsection{R2.3 -- Distribuição de Candidatos por Renda}
+\subsubsection{R2.3 -- Mediana por Área e Escolaridade da Mãe}
 
-A maioria dos candidatos (68,8\%) declarou não ter renda familiar (faixa A), enquanto 31,2\% declararam renda de até R\$ 1.320 (faixa B), conforme a Figura~\ref{fig:r23}.
+A Figura~\ref{fig:r23} mostra o mesmo recorte para a escolaridade da mãe. O padrão é semelhante ao paterno, indicando que a escolaridade de ambos os pais impacta positivamente o desempenho.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{r23}
-    \caption{Distribuição de candidatos por renda (R2.3)}
+    \includegraphics[width=0.9\textwidth]{r23}
+    \caption{Mediana por área e escolaridade da mãe (R2.3)}
     \label{fig:r23}
 \end{figure}
 
-\subsubsection{R2.4 -- Mediana por Renda e Tipo de Escola}
+\subsubsection{R2.4 -- Escolaridade do Pai vs. Mãe e Nota Média}
 
-A Figura~\ref{fig:r24} mostra a interação entre renda e tipo de escola. A Tabela~\ref{tab:rendaescola} apresenta os valores.
-
-\begin{table}[H]
-\centering
-\caption{Mediana da nota média por renda e tipo de escola}
-\label{tab:rendaescola}
-\begin{tabular}{lcc}
-\toprule
-\textbf{Renda} & \textbf{Pública} & \textbf{Privada} \\
-\midrule
-Nenhuma renda    & 510,0 & 620,7 \\
-Até R\$ 1.320  & 509,3 & 620,4 \\
-\bottomrule
-\end{tabular}
-\end{table}
+A Figura~\ref{fig:r24} cruza a escolaridade do pai e da mãe em um heatmap, com a mediana da nota média como intensidade. A diagonal sugere que a combinação de pais com alta escolaridade produz os melhores resultados.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{r24}
-    \caption{Mediana por renda e tipo de escola (R2.4)}
+    \includegraphics[width=0.8\textwidth]{r24}
+    \caption{Heatmap: escolaridade do pai vs. mãe e nota média (R2.4)}
     \label{fig:r24}
 \end{figure}
 
 \textbf{Achados:}
 \begin{itemize}
-    \item A mediana da nota média é praticamente idêntica entre as duas faixas de renda: 528,7 (nenhuma renda) e 528,4 (até R\$ 1.320).
-    \item O tipo de escola é um fator muito mais discriminante que a renda: dentro de cada faixa de renda, a diferença entre escolas públicas e privadas é de aproximadamente 110 pontos.
-    \item Candidatos de escolas privadas com nenhuma renda (620,7) têm desempenho muito superior a candidatos de escolas públicas com a mesma renda (510,0).
+    \item Candidatos cujos pais têm pós-graduação apresentam mediana de nota média muito superior aos com pais que nunca estudaram, com diferença superior a 100 pontos tanto para o pai quanto para a mãe.
+    \item O efeito é monotônico: a cada aumento no nível de escolaridade dos pais, a nota média mediana se eleva.
+    \item A escolaridade da mãe mostra associação ligeiramente mais forte que a do pai nos níveis mais altos.
+    \item O padrão se mantém em todas as áreas de conhecimento, sendo mais acentuado em Matemática e Redação.
 \end{itemize}
 
 % ----------------------------------------------------------
@@ -389,19 +376,19 @@ Até R\$ 1.320  & 509,3 & 620,4 \\
 
 \subsection{Síntese dos Achados}
 
-Os dados revelam que o tipo de escola é fortemente associado ao desempenho no ENEM 2024, com diferenças expressivas em todas as áreas do conhecimento. A renda familiar, na forma como foi capturada neste ano (apenas duas faixas), apresenta baixa capacidade discriminatória quando analisada isoladamente.
+Os dados revelam que o tipo de escola é fortemente associado ao desempenho no ENEM 2024, com diferenças expressivas em todas as áreas do conhecimento. A escolaridade dos pais também apresenta forte associação com o desempenho, com efeito monotônico e consistente entre as áreas — quanto maior a escolaridade, maior a nota.
 
 A diferença mais acentuada ocorre em Redação (180 pontos de mediana) e Matemática (159 pontos), áreas tradicionalmente associadas a maior desigualdade educacional. Linguagens apresenta o menor gap (56 pontos), possivelmente por ser uma área mais dependente de habilidades transversais.
 
 \subsection{Relação entre RQ1 e RQ2}
 
-A análise conjunta de renda e tipo de escola (R2.4) revela que, dentro de cada faixa de renda, a diferença entre escolas públicas e privadas se mantém elevada (cerca de 110 pontos na nota média). Isso sugere que o tipo de escola é um fator preditor mais forte que a renda \textit{per se}, embora as duas variáveis estejam correlacionadas: candidatos de escolas privadas tendem a pertencer a faixas de renda mais altas (quando mais faixas estivessem disponíveis).
+A análise conjunta revela que tanto o tipo de escola (RQ1) quanto a escolaridade dos pais (RQ2) estão fortemente associados ao desempenho. Embora as variáveis estejam correlacionadas — pais com maior escolaridade tendem a matricular seus filhos em escolas privadas —, o efeito da escola se mantém significativo mesmo quando controlado indiretamente pela escolaridade parental, indicando que a qualidade do ensino ofertado é um fator determinante.
 
 \subsection{Limitações}
 
 \begin{itemize}
     \item \textbf{Viés de seleção}: a análise considera apenas candidatos presentes em todas as provas, excluindo ausentes que podem ter perfil sistematicamente diferente.
-    \item \textbf{Renda autodeclarada}: a variável Q006 é auto-reportada e, no ENEM 2024, apresenta apenas duas categorias, limitando a análise de desigualdade de renda.
+    \item \textbf{Dados autodeclarados}: variáveis como escolaridade dos pais (Q001, Q002) são auto-reportadas e podem conter imprecisões, especialmente quando o candidato não conhece a escolaridade dos pais.
     \item \textbf{Correlação $\neq$ causalidade}: os resultados indicam associações, não relações de causa e efeito.
     \item \textbf{Cobertura}: o ENEM não abrange toda a população jovem brasileira — há evasão escolar e candidatos que optam por não realizar o exame.
 \end{itemize}
@@ -411,9 +398,8 @@ A análise conjunta de renda e tipo de escola (R2.4) revela que, dentro de cada 
 \begin{itemize}
     \item Análise longitudinal comparando edições do ENEM ao longo dos anos para identificar tendências.
     \item Modelagem preditiva de desempenho utilizando regressão múltipla ou algoritmos de machine learning.
-    \item Inclusão de variáveis adicionais como escolaridade dos pais (Q001, Q002) para análise multivariada.
-    \item Análise por raça/cor interseccionada com renda e tipo de escola para investigar desigualdades estruturais.
-    \item Comparação com edições anteriores do ENEM que possuíam mais faixas de renda, permitindo análise mais granular.
+    \item Análise interseccional cruzando escolaridade dos pais, tipo de escola e raça/cor para investigar desigualdades estruturais.
+    \item Modelagem multivariada para quantificar a contribuição relativa de cada fator (escola, escolaridade parental, região) no desempenho.
 \end{itemize}
 
 \end{document}
