@@ -117,6 +117,11 @@ df = df.rename(columns={
     'NU_NOTA_REDACAO': 'Redação'
 })
 
+import gzip, shutil, os
 df.to_csv(SAIDA, index=False, encoding='utf-8')
+with open(SAIDA, 'rb') as f_in:
+    with gzip.open(SAIDA + '.gz', 'wb') as f_out:
+        shutil.copyfileobj(f_in, f_out)
+os.remove(SAIDA)
 print(f"\nDataset limpo exportado: {len(df):,} candidatos, {len(df.columns)} colunas")
-print(f"Arquivo: {SAIDA}")
+print(f"Arquivo: {SAIDA}.gz")

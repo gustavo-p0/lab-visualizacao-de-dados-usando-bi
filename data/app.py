@@ -6,7 +6,7 @@ st.set_page_config(page_title='ENEM 2024 — Dashboard', layout='wide')
 
 @st.cache_data
 def load_data():
-    df = pd.read_csv('enem_2024_limpo.csv', encoding='utf-8')
+    df = pd.read_csv('enem_2024_limpo.csv.gz', encoding='utf-8', compression='gzip')
     ORDEM_RENDA = ['Nenhuma renda', 'Até R$1.320']
     df['Renda Familiar'] = pd.Categorical(df['Renda Familiar'], categories=ORDEM_RENDA, ordered=True)
     return df
