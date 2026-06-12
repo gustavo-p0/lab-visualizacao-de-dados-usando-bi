@@ -66,7 +66,7 @@ with tab1:
         color='Tipo de Escola',
         color_discrete_map={'Pública': '#1f77b4', 'Privada': '#ff7f0e'}
     )
-    st.plotly_chart(g1, use_container_width=True)
+    st.plotly_chart(g1, width='stretch')
 
     st.subheader('G2 — Distribuição por Raça/Cor')
     g2_data = df_filt['Raça/Cor'].value_counts().reset_index()
@@ -77,7 +77,7 @@ with tab1:
         color='Raça/Cor', text_auto=True
     )
     g2.update_layout(yaxis={'categoryorder': 'total ascending'}, showlegend=False)
-    st.plotly_chart(g2, use_container_width=True)
+    st.plotly_chart(g2, width='stretch')
 
     st.subheader('G3 — Distribuição por Faixa Etária')
     age_order = ['<17','17','18','19','20','21','22','23','24','25',
@@ -90,7 +90,7 @@ with tab1:
         title='Candidatos por Faixa Etária',
         color='Contagem', color_continuous_scale='Blues'
     )
-    st.plotly_chart(g3, use_container_width=True)
+    st.plotly_chart(g3, width='stretch')
 
     st.subheader('G4 — Distribuição por Sexo')
     g4 = px.pie(
@@ -99,7 +99,7 @@ with tab1:
         color='Sexo',
         color_discrete_map={'Masculino': '#2ca02c', 'Feminino': '#d62728'}
     )
-    st.plotly_chart(g4, use_container_width=True)
+    st.plotly_chart(g4, width='stretch')
 
     st.subheader('G5 — Candidatos por Região e Tipo de Escola')
     g5_data = df_filt.groupby(['Região', 'Tipo de Escola']).size().reset_index(name='Contagem')
@@ -108,7 +108,7 @@ with tab1:
         barmode='group', title='Candidatos por Região e Tipo de Escola',
         color_discrete_map={'Pública': '#1f77b4', 'Privada': '#ff7f0e'}
     )
-    st.plotly_chart(g5, use_container_width=True)
+    st.plotly_chart(g5, width='stretch')
 
     st.subheader('G6 — Candidatos por Estado')
     g6_data = df_filt['SG_UF_PROVA'].value_counts().head(27).reset_index()
@@ -119,7 +119,7 @@ with tab1:
         color='Contagem', text_auto=True
     )
     g6.update_layout(yaxis={'categoryorder': 'total ascending'})
-    st.plotly_chart(g6, use_container_width=True)
+    st.plotly_chart(g6, width='stretch')
 
     st.subheader('G7 — Distribuição das Notas por Área')
     df_long = df_filt.melt(
@@ -133,14 +133,14 @@ with tab1:
         title='Distribuição das Notas por Área',
         color='Área'
     )
-    st.plotly_chart(g7, use_container_width=True)
+    st.plotly_chart(g7, width='stretch')
     st.markdown('**Pública vs. Privada**')
     g7b = px.box(
         df_long, x='Área', y='Nota', color='Tipo de Escola',
         title='Distribuição das Notas por Área e Tipo de Escola',
         color_discrete_map={'Pública': '#1f77b4', 'Privada': '#ff7f0e'}
     )
-    st.plotly_chart(g7b, use_container_width=True)
+    st.plotly_chart(g7b, width='stretch')
 
     st.subheader('G8 — Mediana por Área e Tipo de Escola')
     g8_data = df_filt.groupby('Tipo de Escola')[AREAS].median().reset_index()
@@ -152,7 +152,7 @@ with tab1:
         color_discrete_map={'Pública': '#1f77b4', 'Privada': '#ff7f0e'},
         text_auto='.1f'
     )
-    st.plotly_chart(g8, use_container_width=True)
+    st.plotly_chart(g8, width='stretch')
 
 with tab2:
     st.header('RQ1 — Tipo de Escola e Desempenho no ENEM 2024')
@@ -171,7 +171,7 @@ with tab2:
         color_discrete_map={'Pública': '#1f77b4', 'Privada': '#ff7f0e'},
         text_auto='.1f'
     )
-    st.plotly_chart(r11, use_container_width=True)
+    st.plotly_chart(r11, width='stretch')
 
     st.subheader('R1.2 — Distribuição das Notas: Pública vs. Privada')
     r12 = px.box(
@@ -179,7 +179,7 @@ with tab2:
         title='Distribuição das Notas por Área: Pública vs. Privada',
         color_discrete_map={'Pública': '#1f77b4', 'Privada': '#ff7f0e'}
     )
-    st.plotly_chart(r12, use_container_width=True)
+    st.plotly_chart(r12, width='stretch')
 
     st.subheader('R1.3 — % de Candidatos com Nota > 600: Pública vs. Privada')
     r13_data = []
@@ -200,7 +200,7 @@ with tab2:
         text_auto='.1f'
     )
     r13.update_layout(yaxis_title='% Candidatos')
-    st.plotly_chart(r13, use_container_width=True)
+    st.plotly_chart(r13, width='stretch')
 
     st.subheader('R1.4 — Distribuição da Nota Média Geral por Tipo de Escola')
     r14 = px.histogram(
@@ -210,7 +210,7 @@ with tab2:
         color_discrete_map={'Pública': '#1f77b4', 'Privada': '#ff7f0e'},
         labels={'Nota Média': 'Nota Média Geral', 'count': 'Frequência'}
     )
-    st.plotly_chart(r14, use_container_width=True)
+    st.plotly_chart(r14, width='stretch')
 
     med_por_escola = df_filt.groupby('Tipo de Escola')[AREAS].median()
     if 'Privada' in med_por_escola.index and 'Pública' in med_por_escola.index:
@@ -241,7 +241,7 @@ with tab3:
         labels={'Renda Familiar': 'Faixa de Renda', 'Nota Média': 'Mediana da Nota Média'}
     )
     r21.update_layout(xaxis_tickangle=-45)
-    st.plotly_chart(r21, use_container_width=True)
+    st.plotly_chart(r21, width='stretch')
 
     st.subheader('R2.2 — Mediana das Notas por Área e Faixa de Renda')
     r22_data = df_filt.groupby('Renda Familiar', observed=True)[AREAS].median().reset_index()
@@ -252,7 +252,7 @@ with tab3:
         labels={'x': 'Área', 'y': 'Renda Familiar', 'color': 'Mediana'},
         aspect='auto'
     )
-    st.plotly_chart(r22, use_container_width=True)
+    st.plotly_chart(r22, width='stretch')
 
     st.subheader('R2.3 — Distribuição de Candidatos por Faixa de Renda')
     r23_data = df_filt.groupby('Renda Familiar', observed=True).size().reset_index(name='Contagem')
@@ -263,7 +263,7 @@ with tab3:
         labels={'Renda Familiar': 'Faixa de Renda', 'Contagem': 'Número de Candidatos'}
     )
     r23.update_layout(xaxis_tickangle=-45)
-    st.plotly_chart(r23, use_container_width=True)
+    st.plotly_chart(r23, width='stretch')
 
     st.subheader('R2.4 — Mediana por Renda e Tipo de Escola')
     r24_data = df_filt.groupby(['Renda Familiar', 'Tipo de Escola'], observed=True)['Nota Média'].median().reset_index()
@@ -275,7 +275,7 @@ with tab3:
         labels={'Renda Familiar': 'Faixa de Renda', 'Nota Média': 'Mediana da Nota Média'}
     )
     r24.update_layout(xaxis_tickangle=-45)
-    st.plotly_chart(r24, use_container_width=True)
+    st.plotly_chart(r24, width='stretch')
 
     renda_groups = df_filt.groupby('Renda Familiar', observed=True)['Nota Média'].median()
     if len(renda_groups) >= 2:
