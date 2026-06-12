@@ -260,12 +260,11 @@ with tab3:
 
     st.subheader('R2.2 — Mediana das Notas por Área e Faixa de Renda')
     r22_data = df_filt.groupby('Renda Familiar', observed=True)[AREAS].median().reset_index()
-    r22 = px.imshow(
-        r22_data.set_index('Renda Familiar')[AREAS],
-        color_continuous_scale='RdYlGn',
-        title='Mediana das Notas por Área e Faixa de Renda',
-        labels={'x': 'Área', 'y': 'Renda Familiar', 'color': 'Mediana'},
-        aspect='auto'
+    r22 = px.bar(
+        r22_data.melt(id_vars='Renda Familiar', var_name='Área', value_name='Mediana'),
+        x='Área', y='Mediana', color='Renda Familiar',
+        barmode='group', text_auto='.0f',
+        title='Mediana das Notas por Área e Faixa de Renda'
     )
     safe_chart(r22, width='stretch')
 
