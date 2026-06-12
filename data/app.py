@@ -7,9 +7,13 @@ BASE = os.path.dirname(os.path.abspath(__file__))
 
 st.set_page_config(page_title='ENEM 2024 — Dashboard', layout='wide')
 
-@st.cache_data
+@st.cache_resource
 def load_data():
-    df = pd.read_csv(os.path.join(BASE, 'enem_2024_limpo.csv.gz'), encoding='utf-8', compression='gzip')
+    df = pd.read_csv(
+        os.path.join(BASE, 'enem_2024_limpo.csv.gz'),
+        encoding='utf-8', compression='gzip',
+        dtype_backend='pyarrow', engine='pyarrow'
+    )
     ORDEM_RENDA = ['Nenhuma renda', 'Até R$1.320']
     df['Renda Familiar'] = pd.Categorical(df['Renda Familiar'], categories=ORDEM_RENDA, ordered=True)
     return df
