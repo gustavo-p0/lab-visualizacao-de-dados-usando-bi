@@ -2,3 +2,9 @@
 data.zip
 enem_2024_limpo.csv
 microdados_enem_2024/
+prints/
+*.aux
+*.log
+*.out
+capture_charts.py
+gera_graficos.py
