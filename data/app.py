@@ -64,8 +64,10 @@ with tab1:
     col_k4.metric('Mediana Nota Média Geral', f'{med_nota:.1f}')
 
     st.subheader('G1 — Distribuição por Tipo de Escola')
+    g1_data = df_filt['Tipo de Escola'].value_counts().reset_index()
+    g1_data.columns = ['Tipo de Escola', 'Contagem']
     g1 = px.pie(
-        df_filt, names='Tipo de Escola',
+        g1_data, names='Tipo de Escola', values='Contagem',
         title='Distribuição por Tipo de Escola',
         color='Tipo de Escola',
         color_discrete_map={'Pública': '#1f77b4', 'Privada': '#ff7f0e'}
@@ -97,8 +99,10 @@ with tab1:
     st.plotly_chart(g3, width='stretch')
 
     st.subheader('G4 — Distribuição por Sexo')
+    g4_data = df_filt['Sexo'].value_counts().reset_index()
+    g4_data.columns = ['Sexo', 'Contagem']
     g4 = px.pie(
-        df_filt, names='Sexo',
+        g4_data, names='Sexo', values='Contagem',
         title='Distribuição por Sexo',
         color='Sexo',
         color_discrete_map={'Masculino': '#2ca02c', 'Feminino': '#d62728'}
