@@ -69,7 +69,6 @@ with tab1:
     g1 = px.pie(
         g1_data, names='Tipo de Escola', values='Contagem',
         title='Distribuição por Tipo de Escola',
-        color='Tipo de Escola',
         color_discrete_map={'Pública': '#1f77b4', 'Privada': '#ff7f0e'}
     )
     st.plotly_chart(g1, width='stretch')
@@ -104,7 +103,6 @@ with tab1:
     g4 = px.pie(
         g4_data, names='Sexo', values='Contagem',
         title='Distribuição por Sexo',
-        color='Sexo',
         color_discrete_map={'Masculino': '#2ca02c', 'Feminino': '#d62728'}
     )
     st.plotly_chart(g4, width='stretch')
