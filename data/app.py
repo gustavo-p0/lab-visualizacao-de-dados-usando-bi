@@ -291,6 +291,8 @@ with tab3:
             category_orders={'Região': REG_ORDER}, text_auto='.0f'
         )
         r22.update_layout(showlegend=False, height=700)
+        for anno in r22.layout.annotations:
+            anno.text = anno.text.split('=')[-1]
         safe_chart(r22, 'r22')
     except Exception:
         st.warning('Gráfico R2.2 indisponível para este recorte.')
