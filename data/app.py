@@ -260,11 +260,11 @@ with tab3:
         'e o desempenho médio no ENEM 2024?'
     )
     st.warning(
-        '**Limitação:** O ENEM possui 20 faixas de renda (Q006 A–T), mas o '
-        'pré-processamento deste projeto mapeou apenas **A** ("Nenhuma renda") e '
-        '**B** ("Até R$1.320"). As demais 18 faixas foram descartadas, '
-        'tornando a análise pouco informativa — os dois grupos têm perfil '
-        'socioeconômico quase idêntico e, de fato, as medianas são muito próximas.'
+        '**Limitação:** O microdado do ENEM 2024 contém apenas 2 dos 20 valores '
+        'possíveis para **Q006** (renda familiar): **A** ("Nenhuma renda") e '
+        '**B** ("Até R$1.320"). As demais 18 faixas (C–T) não estão presentes '
+        'neste ano, independentemente dos filtros aplicados. Com apenas dois '
+        'grupos de baixa renda, as medianas são naturalmente muito próximas.'
     )
 
     st.subheader('R2.1 — Relação entre Renda Familiar e Nota Média (Mediana)')
