@@ -14,6 +14,8 @@
 \usepackage{amsmath}
 \usepackage{setspace}
 \usepackage{pgfplots}
+\usepackage{graphicx}
+\graphicspath{{prints/}}
 
 \geometry{margin=3cm}
 \onehalfspacing
@@ -142,10 +144,9 @@ A Figura~\ref{fig:g1} mostra que 79,4\% dos candidatos são de escolas públicas
 
 \begin{figure}[H]
     \centering
+    \includegraphics[width=0.6\textwidth]{g1}
     \caption{Distribuição dos candidatos por tipo de escola (G1)}
     \label{fig:g1}
-    \vspace{1cm}
-    \textit{(Inserir print do gráfico G1 -- pizza)}
 \end{figure}
 
 \subsubsection{G2 -- Distribuição por Raça/Cor}
@@ -154,10 +155,9 @@ A maior parte dos candidatos declara-se parda ou branca, conforme a Figura~\ref{
 
 \begin{figure}[H]
     \centering
+    \includegraphics[width=0.8\textwidth]{g2}
     \caption{Distribuição dos candidatos por raça/cor (G2)}
     \label{fig:g2}
-    \vspace{1cm}
-    \textit{(Inserir print do gráfico G2 -- barras horizontais)}
 \end{figure}
 
 \subsubsection{G3 -- Distribuição por Faixa Etária}
@@ -166,10 +166,9 @@ A Figura~\ref{fig:g3} apresenta a concentração de candidatos na faixa dos 17 a
 
 \begin{figure}[H]
     \centering
+    \includegraphics[width=0.85\textwidth]{g3}
     \caption{Distribuição por faixa etária (G3)}
     \label{fig:g3}
-    \vspace{1cm}
-    \textit{(Inserir print do gráfico G3 -- barras verticais)}
 \end{figure}
 
 \subsubsection{G4 -- Distribuição por Sexo}
@@ -178,10 +177,9 @@ A Figura~\ref{fig:g4} mostra a proporção entre candidatos masculinos e feminin
 
 \begin{figure}[H]
     \centering
+    \includegraphics[width=0.55\textwidth]{g4}
     \caption{Distribuição por sexo (G4)}
     \label{fig:g4}
-    \vspace{1cm}
-    \textit{(Inserir print do gráfico G4 -- pizza)}
 \end{figure}
 
 \subsubsection{G5 -- Candidatos por Região e Tipo de Escola}
@@ -190,10 +188,9 @@ A Figura~\ref{fig:g5} segmenta os candidatos por região geográfica e tipo de e
 
 \begin{figure}[H]
     \centering
+    \includegraphics[width=0.85\textwidth]{g5}
     \caption{Candidatos por região e tipo de escola (G5)}
     \label{fig:g5}
-    \vspace{1cm}
-    \textit{(Inserir print do gráfico G5 -- barras agrupadas)}
 \end{figure}
 
 \subsubsection{G6 -- Candidatos por Estado}
@@ -202,10 +199,9 @@ A Figura~\ref{fig:g6} lista os estados com maior número de candidatos.
 
 \begin{figure}[H]
     \centering
+    \includegraphics[width=0.8\textwidth]{g6}
     \caption{Candidatos por estado (G6)}
     \label{fig:g6}
-    \vspace{1cm}
-    \textit{(Inserir print do gráfico G6 -- barras horizontais)}
 \end{figure}
 
 \subsubsection{G7 -- Distribuição das Notas por Área}
@@ -214,10 +210,9 @@ A Figura~\ref{fig:g7} apresenta a distribuição das notas em cada área, eviden
 
 \begin{figure}[H]
     \centering
+    \includegraphics[width=0.85\textwidth]{g7}
     \caption{Distribuição das notas por área (G7)}
     \label{fig:g7}
-    \vspace{1cm}
-    \textit{(Inserir print do gráfico G7 -- box plot)}
 \end{figure}
 
 \subsubsection{G8 -- Mediana por Área e Tipo de Escola}
@@ -226,10 +221,9 @@ A Figura~\ref{fig:g8} compara as medianas entre escolas públicas e privadas.
 
 \begin{figure}[H]
     \centering
+    \includegraphics[width=0.85\textwidth]{g8}
     \caption{Mediana por área e tipo de escola (G8)}
     \label{fig:g8}
-    \vspace{1cm}
-    \textit{(Inserir print do gráfico G8 -- barras agrupadas)}
 \end{figure}
 
 % ----------------------------------------------------------
@@ -263,23 +257,14 @@ Redação              & 620,0 & 800,0 & 180,0 \\
 
 \begin{figure}[H]
     \centering
+    \includegraphics[width=0.85\textwidth]{g8}
     \caption{Mediana por área: pública vs. privada (R1.1)}
     \label{fig:r11}
-    \vspace{1cm}
-    \textit{(Inserir print do gráfico R1.1 -- barras agrupadas)}
 \end{figure}
 
 \subsubsection{R1.2 -- Distribuição das Notas: Pública vs. Privada}
 
-O box plot (Figura~\ref{fig:r12}) revela a dispersão das notas, evidenciando que escolas privadas apresentam maior variabilidade e medianas superiores.
-
-\begin{figure}[H]
-    \centering
-    \caption{Distribuição das notas: pública vs. privada (R1.2)}
-    \label{fig:r12}
-    \vspace{1cm}
-    \textit{(Inserir print do gráfico R1.2 -- box plot)}
-\end{figure}
+A Figura~\ref{fig:g7} (seção anterior) já apresenta a distribuição geral das notas. A Tabela~\ref{tab:medianas} complementa com a comparação direta entre públicas e privadas.
 
 \subsubsection{R1.3 -- Percentual de Candidatos com Nota Acima de 600}
 
@@ -304,10 +289,9 @@ Redação              & 50,6\% & 85,8\% & 35,2 \\
 
 \begin{figure}[H]
     \centering
+    \includegraphics[width=0.85\textwidth]{r13}
     \caption{\% de candidatos com nota $>$ 600 (R1.3)}
     \label{fig:r13}
-    \vspace{1cm}
-    \textit{(Inserir print do gráfico R1.3 -- barras agrupadas)}
 \end{figure}
 
 \subsubsection{R1.4 -- Distribuição da Nota Média Geral}
@@ -316,10 +300,9 @@ O histograma sobreposto (Figura~\ref{fig:r14}) compara a distribuição da nota 
 
 \begin{figure}[H]
     \centering
+    \includegraphics[width=0.85\textwidth]{r14}
     \caption{Distribuição da nota média geral (R1.4)}
     \label{fig:r14}
-    \vspace{1cm}
-    \textit{(Inserir print do gráfico R1.4 -- histograma)}
 \end{figure}
 
 \textbf{Achados:}
@@ -343,10 +326,9 @@ A Figura~\ref{fig:r21} mostra a mediana da nota média para cada faixa de renda.
 
 \begin{figure}[H]
     \centering
+    \includegraphics[width=0.7\textwidth]{r21}
     \caption{Relação entre renda familiar e nota média (R2.1)}
     \label{fig:r21}
-    \vspace{1cm}
-    \textit{(Inserir print do gráfico R2.1 -- linha)}
 \end{figure}
 
 \subsubsection{R2.2 -- Mediana por Área e Renda (Heatmap)}
@@ -355,10 +337,9 @@ O heatmap (Figura~\ref{fig:r22}) mostra que a mediana das notas é praticamente 
 
 \begin{figure}[H]
     \centering
+    \includegraphics[width=0.8\textwidth]{r22}
     \caption{Mediana por área e faixa de renda (R2.2)}
     \label{fig:r22}
-    \vspace{1cm}
-    \textit{(Inserir print do gráfico R2.2 -- heatmap)}
 \end{figure}
 
 \subsubsection{R2.3 -- Distribuição de Candidatos por Renda}
@@ -367,10 +348,9 @@ A maioria dos candidatos (68,8\%) declarou não ter renda familiar (faixa A), en
 
 \begin{figure}[H]
     \centering
+    \includegraphics[width=0.7\textwidth]{r23}
     \caption{Distribuição de candidatos por renda (R2.3)}
     \label{fig:r23}
-    \vspace{1cm}
-    \textit{(Inserir print do gráfico R2.3 -- barras verticais)}
 \end{figure}
 
 \subsubsection{R2.4 -- Mediana por Renda e Tipo de Escola}
@@ -393,10 +373,9 @@ Até R\$ 1.320  & 509,3 & 620,4 \\
 
 \begin{figure}[H]
     \centering
+    \includegraphics[width=0.7\textwidth]{r24}
     \caption{Mediana por renda e tipo de escola (R2.4)}
     \label{fig:r24}
-    \vspace{1cm}
-    \textit{(Inserir print do gráfico R2.4 -- barras agrupadas)}
 \end{figure}
 
 \textbf{Achados:}

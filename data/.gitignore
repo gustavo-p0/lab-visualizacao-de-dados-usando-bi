@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.DS_Store
+
+# Raw and large datasets
+microdados_enem_2024/
+microdados_enem_2024.zip
+microdados_enem_2024_limpo.parquet
+
+# Optional local artifacts
+*.log
