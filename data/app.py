@@ -47,7 +47,7 @@ st.sidebar.metric('Candidatos selecionados', f'{len(df_filt):,}')
 tab1, tab2, tab3 = st.tabs([
     'Caracterização do Dataset',
     'RQ1 — Tipo de Escola vs. Desempenho',
-    'RQ2 — Região vs. Desempenho'
+    'RQ2 — Correlação entre Disciplinas'
 ])
 
 def safe_chart(fig, key=None, **kwargs):
@@ -251,10 +251,73 @@ with tab2:
         )
 
 with tab3:
-    st.header('RQ2 — Região e Desempenho no ENEM 2024')
+    st.header('RQ2 — Correlação entre Disciplinas no ENEM 2024')
     st.info(
-        '**Pergunta:** Qual a relação entre a região geográfica '
-        'e o desempenho dos candidatos no ENEM 2024?'
+        '**Pergunta:** Qual a correlação entre os desempenhos nas diferentes '
+        'disciplinas? Candidatos que vão bem em Ciências da Natureza também '
+        'vão bem em Matemática? E Redação?'
+    )
+
+    st.subheader('R2.1 — Matriz de Correlação (Spearman)')
+    corr = df_filt[AREAS].corr(method='spearman').round(2)
+    corr_melt = corr.reset_index().melt(id_vars='index', var_name='Área', value_name='Correlação')
+    corr_melt.columns = ['Disciplina', 'Área', 'Correlação']
+    r21 = px.imshow(
+        corr.values, x=corr.columns, y=corr.columns,
+        color_continuous_scale='RdBu_r', text_auto='.2f', zmin=-1, zmax=1,
+        title='Correlação de Spearman entre Disciplinas'
+    )
+    r21.update_layout(width=600, height=500)
+    safe_chart(r21, 'r21')
+
+    st.subheader('R2.2 — Comparação: Escola Pública vs. Privada')
+    try:
+        corr_pub = df_filt[df_filt['Tipo de Escola']=='Pública'][AREAS].corr(method='spearman')
+        corr_priv = df_filt[df_filt['Tipo de Escola']=='Privada'][AREAS].corr(method='spearman')
+        diff = corr_priv - corr_pub
+        r22 = px.imshow(
+            diff.values, x=diff.columns, y=diff.columns,
+            color_continuous_scale='RdBu_r', text_auto='.3f', zmin=-0.3, zmax=0.3,
+            title='Diferença na Correlação (Privada − Pública)'
+        )
+        r22.update_layout(width=600, height=500)
+        safe_chart(r22, 'r22')
+    except Exception:
+        st.warning('Gráfico R2.2 indisponível para este recorte.')
+
+    st.subheader('R2.3 — Dispersão: Redação vs. Nota Média')
+    try:
+        df_sample = df_filt.sample(10000)
+        r23 = px.scatter(
+            df_sample, x='Redação', y='Nota Média', color='Tipo de Escola',
+            opacity=0.3, title='Redação vs. Nota Média (amostra 10k)',
+            color_discrete_map={'Pública': '#1f77b4', 'Privada': '#ff7f0e'},
+            labels={'Redação': 'Redação', 'Nota Média': 'Nota Média'}
+        )
+        safe_chart(r23, 'r23')
+    except Exception:
+        st.warning('Gráfico R2.3 indisponível para este recorte.')
+
+    st.subheader('R2.4 — Dispersão: Matemática vs. Ciências da Natureza')
+    try:
+        r24 = px.scatter(
+            df_sample, x='Matemática', y='Ciências da Natureza', color='Tipo de Escola',
+            opacity=0.3, title='Matemática vs. Ciências da Natureza (amostra 10k)',
+            color_discrete_map={'Pública': '#1f77b4', 'Privada': '#ff7f0e'},
+            labels={'Matemática': 'Matemática', 'Ciências da Natureza': 'Ciências da Natureza'}
+        )
+        safe_chart(r24, 'r24')
+    except Exception:
+        st.warning('Gráfico R2.4 indisponível para este recorte.')
+
+    st.success(
+        '**Insights:**'
+        '\n- As correlações mais fortes são entre disciplinas de áreas afins: '
+        'CN ↔ CH (0,64) e CN ↔ LC (0,63).'
+        '\n- Redação é a disciplina mais independente (correlação máxima de 0,58 com CH).'
+        '\n- Escolas privadas têm correlações mais altas entre todas as disciplinas, '
+        'indicando um perfil de desempenho mais homogêneo.'
+        '\n- A maior diferença está em MT × CN: 0,73 (privada) vs. 0,49 (pública).'
     )
 
     REG_ORDER = ['Norte', 'Nordeste', 'Centro-Oeste', 'Sudeste', 'Sul']

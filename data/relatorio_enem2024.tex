@@ -26,7 +26,7 @@
 }
 
 \title{Análise dos Fatores Associados ao Desempenho no ENEM 2024:\\
-Tipo de Escola, Região e Perfil dos Candidatos}
+Tipo de Escola, Correlação entre Disciplinas e Perfil dos Candidatos}
 \author{Érica Alves dos Santos \and Gustavo Pimentel Carvalho Costa}
 \date{2026}
 
@@ -42,9 +42,9 @@ Tipo de Escola, Região e Perfil dos Candidatos}
 
 O Exame Nacional do Ensino Médio (ENEM) é a principal porta de entrada para o ensino superior no Brasil, utilizado por instituições públicas e privadas como mecanismo de seleção. Criado em 1998, o exame avalia o desempenho dos estudantes em cinco áreas do conhecimento: Ciências da Natureza, Ciências Humanas, Linguagens e Códigos, Matemática e Redação.
 
-O Brasil apresenta profundas desigualdades educacionais e socioeconômicas que se refletem nos resultados do ENEM. Estudantes de escolas privadas, com maior acesso a recursos educacionais, tendem a obter desempenho superior àqueles de escolas públicas. Da mesma forma, a região geográfica do candidato pode influenciar o acesso a uma educação de qualidade e, consequentemente, o desempenho no exame.
+O Brasil apresenta profundas desigualdades educacionais e socioeconômicas que se refletem nos resultados do ENEM. Estudantes de escolas privadas, com maior acesso a recursos educacionais, tendem a obter desempenho superior àqueles de escolas públicas. Além disso, a correlação entre os desempenhos nas diferentes áreas do conhecimento pode revelar padrões de aprendizado e perfis de candidatos.
 
-Este trabalho tem como objetivo analisar o perfil dos candidatos do ENEM 2024 e investigar a relação entre fatores socioeconômicos (tipo de escola e região) e o desempenho nas cinco áreas do conhecimento. A análise é conduzida por meio de um dashboard interativo desenvolvido com Streamlit e Plotly Express.
+Este trabalho tem como objetivo analisar o perfil dos candidatos do ENEM 2024 e investigar dois aspectos: o efeito do tipo de escola no desempenho (RQ1) e a correlação entre as cinco áreas do conhecimento (RQ2). A análise é conduzida por meio de um dashboard interativo desenvolvido com Streamlit e Plotly Express.
 
 O relatório está estruturado em quatro seções: (i) esta introdução; (ii) a metodologia e descrição da base de dados; (iii) os resultados organizados pelas duas questões de pesquisa; e (iv) a discussão dos achados, limitações e trabalhos futuros.
 
@@ -312,60 +312,60 @@ O histograma sobreposto (Figura~\ref{fig:r14}) compara a distribuição da nota 
     \item Apenas 16,3\% dos candidatos de escolas públicas atingem nota acima de 600 em Matemática, contra 58,7\% das privadas.
 \end{itemize}
 
-\subsection{RQ2 -- Região e Desempenho}
+\subsection{RQ2 -- Correlação entre Disciplinas}
 
-\textbf{Pergunta:} Qual a relação entre a região geográfica do candidato e o desempenho no ENEM 2024?
+\textbf{Pergunta:} Qual a correlação entre os desempenhos nas cinco áreas do conhecimento do ENEM 2024? Candidatos que vão bem em Ciências da Natureza também vão bem em Matemática? O desempenho em Redação é independente das provas objetivas?
 
-\subsubsection{R2.1 -- Desvio da Nota Média Mediana por Região}
+\subsubsection{R2.1 -- Matriz de Correlação (Spearman)}
 
-A Figura~\ref{fig:r21} apresenta o desvio da mediana de cada região em relação à mediana global. As diferenças são mínimas (menos de 1 ponto entre extremos), indicando que, neste recorte, o desempenho mediano é homogêneo entre as regiões.
+A Figura~\ref{fig:r21} apresenta a matriz de correlação de Spearman entre as cinco áreas. As correlações mais fortes são entre disciplinas afins: Ciências da Natureza e Ciências Humanas (0,64), Ciências da Natureza e Linguagens (0,63) e Matemática e Ciências da Natureza (0,60). Redação apresenta as menores correlações com as demais áreas (máximo de 0,58 com Ciências Humanas), indicando que a habilidade de escrita é relativamente independente do desempenho nas provas objetivas.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{r21}
-    \caption{Desvio da nota média mediana por região (R2.1)}
+    \includegraphics[width=0.65\textwidth]{r21}
+    \caption{Matriz de correlação de Spearman entre disciplinas (R2.1)}
     \label{fig:r21}
 \end{figure}
 
-\subsubsection{R2.2 -- Mediana por Área e Região}
+\subsubsection{R2.2 -- Diferença na Correlação: Privada vs. Pública}
 
-A Figura~\ref{fig:r22} confirma o padrão para cada área individualmente: as medianas são praticamente idênticas entre as regiões em todas as cinco áreas.
+A Figura~\ref{fig:r22} mostra a diferença na correlação entre escolas privadas e públicas. Valores positivos (vermelho) indicam correlação mais forte na rede privada. Escolas privadas apresentam correlações substancialmente mais altas, especialmente entre Matemática e Ciências da Natureza (diferença de +0,25) e entre Matemática e Ciências Humanas (+0,19). Isso sugere que o ensino privado produz um perfil de desempenho mais homogêneo — alunos que vão bem em uma disciplina tendem a ir bem em todas.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.95\textwidth]{r22}
-    \caption{Mediana por área e região — facetas (R2.2)}
+    \includegraphics[width=0.65\textwidth]{r22}
+    \caption{Diferença na correlação: privada $-$ pública (R2.2)}
     \label{fig:r22}
 \end{figure}
 
-\subsubsection{R2.3 -- Distribuição de Candidatos por Região}
+\subsubsection{R2.3 -- Dispersão: Redação vs. Nota Média}
 
-A Figura~\ref{fig:r23} mostra a distribuição regional dos candidatos. Nordeste e Sudeste concentram a maior parte da amostra.
+A Figura~\ref{fig:r23} apresenta a dispersão entre Redação e a nota média, segmentada por tipo de escola. A nuvem de pontos revela que, embora a correlação seja moderada (0,45--0,58), candidatos de escolas privadas concentram-se na região superior do gráfico (notas altas em ambos).
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{r23}
-    \caption{Distribuição de candidatos por região (R2.3)}
+    \includegraphics[width=0.8\textwidth]{r23}
+    \caption{Redação vs. Nota Média por tipo de escola (R2.3)}
     \label{fig:r23}
 \end{figure}
 
-\subsubsection{R2.4 -- Nota Média Mediana por Região e Tipo de Escola}
+\subsubsection{R2.4 -- Dispersão: Matemática vs. Ciências da Natureza}
 
-A Figura~\ref{fig:r24} cruza região com tipo de escola. O resultado mais expressivo é a \textbf{consistência nacional do gap público-privado}: em todas as regiões, escolas privadas têm mediana próxima de 620 e públicas próxima de 510.
+A Figura~\ref{fig:r24} mostra a forte correlação entre Matemática e Ciências da Natureza (0,61 no geral; 0,73 na rede privada). A diferença entre os dois segmentos é visualmente clara: na rede privada, a nuvem é mais alongada e concentrada, refletindo a maior consistência de desempenho.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\textwidth]{r24}
-    \caption{Nota média mediana por região e tipo de escola (R2.4)}
+    \includegraphics[width=0.8\textwidth]{r24}
+    \caption{Matemática vs. Ciências da Natureza por tipo de escola (R2.4)}
     \label{fig:r24}
 \end{figure}
 
 \textbf{Achados:}
 \begin{itemize}
-    \item As diferenças regionais na mediana da nota média são inferiores a 1 ponto, indicando homogeneidade no desempenho entre regiões após os filtros aplicados.
-    \item O gap entre escolas públicas e privadas é consistente em todas as regiões: privadas ~620, públicas ~510 em todo o Brasil.
-    \item Isso sugere que a desigualdade educacional entre redes pública e privada é um fenômeno nacional, não regional.
-    \item As diferenças regionais no ENEM, quando existem, provavelmente se manifestam mais na taxa de participação e presença do que no desempenho dos candidatos presentes em todas as provas.
+    \item As correlações mais fortes são entre disciplinas afins: Ciências da Natureza e Ciências Humanas (0,64) e Ciências da Natureza e Linguagens (0,63).
+    \item Redação é a disciplina mais independente, com correlação máxima de 0,58 com Ciências Humanas.
+    \item Escolas privadas apresentam correlações sistematicamente mais altas entre todas as disciplinas. A maior diferença está em Matemática $\times$ Ciências da Natureza: 0,73 (privada) vs. 0,49 (pública).
+    \item Esse padrão sugere que o ensino privado produz um perfil de desempenho mais homogêneo, enquanto na rede pública o desempenho é mais variável entre disciplinas.
 \end{itemize}
 
 % ----------------------------------------------------------
@@ -376,11 +376,11 @@ A Figura~\ref{fig:r24} cruza região com tipo de escola. O resultado mais expres
 
 Os dados revelam que o tipo de escola é fortemente associado ao desempenho no ENEM 2024, com diferenças expressivas em todas as áreas do conhecimento. A diferença mais acentuada ocorre em Redação (180 pontos de mediana) e Matemática (159 pontos), áreas tradicionalmente associadas a maior desigualdade educacional. Linguagens apresenta o menor gap (56 pontos), possivelmente por ser uma área mais dependente de habilidades transversais.
 
-A análise regional (RQ2) revela que, após os filtros de presença em todas as provas e exclusão de treineiros, as diferenças regionais no desempenho mediano são mínimas (menos de 1 ponto). O achado mais relevante é a consistência nacional do gap entre escolas públicas e privadas: em todas as regiões, a mediana das privadas é aproximadamente 620 e a das públicas 510.
+A análise de correlação (RQ2) revela padrões distintos entre as redes pública e privada. Na rede privada, as correlações entre disciplinas são substancialmente mais altas, indicando um perfil de desempenho mais homogêneo. Esse resultado pode refletir diferenças na qualidade e na uniformidade do ensino oferecido: escolas privadas tendem a ter currículos mais padronizados e recursos mais estáveis, resultando em menor variabilidade no desempenho entre disciplinas.
 
 \subsection{Relação entre RQ1 e RQ2}
 
-Os resultados de RQ1 e RQ2, analisados em conjunto, indicam que o tipo de escola é o principal fator associado ao desempenho no ENEM 2024, e que esse efeito é homogêneo entre as regiões do país. A ausência de diferenças regionais significativas após o controle por presença e tipo de escola sugere que as desigualdades regionais na educação brasileira se manifestam principalmente no acesso e na permanência dos estudantes, e não no desempenho daqueles que conseguem concluir o ensino médio e realizar todas as provas.
+Os resultados das duas questões de pesquisa se complementam. RQ1 mostra que o tipo de escola está associado a diferenças expressivas de desempenho (até 180 pontos em Redação). RQ2 revela que, além de terem notas mais altas, os candidatos de escolas privadas apresentam um perfil de desempenho mais integrado — quem vai bem em uma disciplina tende a ir bem em todas. Esse duplo efeito (desempenho superior + maior consistência) sugere que a qualidade do ensino privado beneficia os alunos de forma transversal, não apenas em disciplinas isoladas.
 
 \subsection{Limitações}
 
@@ -396,8 +396,8 @@ Os resultados de RQ1 e RQ2, analisados em conjunto, indicam que o tipo de escola
 \begin{itemize}
     \item Análise longitudinal comparando edições do ENEM ao longo dos anos para identificar tendências.
     \item Modelagem preditiva de desempenho utilizando regressão múltipla ou algoritmos de machine learning.
-    \item Análise interseccional cruzando região, tipo de escola e faixa de renda para investigar desigualdades estruturais.
-    \item Modelagem multivariada para quantificar a contribuição relativa de cada fator (escola, região, sexo) no desempenho.
+    \item Análise fatorial ou de componentes principais para identificar dimensões latentes de desempenho no ENEM.
+    \item Modelagem multivariada para quantificar a contribuição relativa de cada fator (escola, sexo, região) no desempenho.
 \end{itemize}
 
 \end{document}
