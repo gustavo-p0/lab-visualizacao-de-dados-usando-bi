@@ -26,7 +26,7 @@
 }
 
 \title{Análise dos Fatores Associados ao Desempenho no ENEM 2024:\\
-Tipo de Escola, Raça/Cor e Perfil dos Candidatos}
+Tipo de Escola, Região e Perfil dos Candidatos}
 \author{Érica Alves dos Santos \and Gustavo Pimentel Carvalho Costa}
 \date{2026}
 
@@ -42,9 +42,9 @@ Tipo de Escola, Raça/Cor e Perfil dos Candidatos}
 
 O Exame Nacional do Ensino Médio (ENEM) é a principal porta de entrada para o ensino superior no Brasil, utilizado por instituições públicas e privadas como mecanismo de seleção. Criado em 1998, o exame avalia o desempenho dos estudantes em cinco áreas do conhecimento: Ciências da Natureza, Ciências Humanas, Linguagens e Códigos, Matemática e Redação.
 
-O Brasil apresenta profundas desigualdades educacionais e socioeconômicas que se refletem nos resultados do ENEM. Estudantes de escolas privadas, com maior acesso a recursos educacionais, tendem a obter desempenho superior àqueles de escolas públicas. Da mesma forma, a raça/cor autodeclarada dos candidatos é um marcador de desigualdade estrutural que se reflete no desempenho educacional.
+O Brasil apresenta profundas desigualdades educacionais e socioeconômicas que se refletem nos resultados do ENEM. Estudantes de escolas privadas, com maior acesso a recursos educacionais, tendem a obter desempenho superior àqueles de escolas públicas. Da mesma forma, a região geográfica do candidato pode influenciar o acesso a uma educação de qualidade e, consequentemente, o desempenho no exame.
 
-Este trabalho tem como objetivo analisar o perfil dos candidatos do ENEM 2024 e investigar a relação entre fatores socioeconômicos (tipo de escola e raça/cor) e o desempenho nas cinco áreas do conhecimento. A análise é conduzida por meio de um dashboard interativo desenvolvido com Streamlit e Plotly Express.
+Este trabalho tem como objetivo analisar o perfil dos candidatos do ENEM 2024 e investigar a relação entre fatores socioeconômicos (tipo de escola e região) e o desempenho nas cinco áreas do conhecimento. A análise é conduzida por meio de um dashboard interativo desenvolvido com Streamlit e Plotly Express.
 
 O relatório está estruturado em quatro seções: (i) esta introdução; (ii) a metodologia e descrição da base de dados; (iii) os resultados organizados pelas duas questões de pesquisa; e (iv) a discussão dos achados, limitações e trabalhos futuros.
 
@@ -312,60 +312,60 @@ O histograma sobreposto (Figura~\ref{fig:r14}) compara a distribuição da nota 
     \item Apenas 16,3\% dos candidatos de escolas públicas atingem nota acima de 600 em Matemática, contra 58,7\% das privadas.
 \end{itemize}
 
-\subsection{RQ2 -- Raça/Cor e Desempenho}
+\subsection{RQ2 -- Região e Desempenho}
 
-\textbf{Pergunta:} Qual a relação entre a raça/cor autodeclarada e o desempenho dos candidatos no ENEM 2024?
+\textbf{Pergunta:} Qual a relação entre a região geográfica do candidato e o desempenho no ENEM 2024?
 
-\subsubsection{R2.1 -- Desvio da Nota Média Mediana por Raça/Cor}
+\subsubsection{R2.1 -- Desvio da Nota Média Mediana por Região}
 
-A Figura~\ref{fig:r21} apresenta o desvio da mediana de cada grupo racial em relação à mediana global da amostra (532,0). O gráfico de barras divergentes torna imediatamente visível quais grupos estão acima (verde) e abaixo (vermelho) da média geral. Candidatos \textbf{Brancos} apresentam o maior desvio positivo, enquanto \textbf{Pretos} e \textbf{Pardos} estão no lado negativo.
+A Figura~\ref{fig:r21} apresenta o desvio da mediana de cada região em relação à mediana global. As diferenças são mínimas (menos de 1 ponto entre extremos), indicando que, neste recorte, o desempenho mediano é homogêneo entre as regiões.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{r21}
-    \caption{Desvio da nota média mediana por raça/cor (R2.1)}
+    \includegraphics[width=0.7\textwidth]{r21}
+    \caption{Desvio da nota média mediana por região (R2.1)}
     \label{fig:r21}
 \end{figure}
 
-\subsubsection{R2.2 -- Mediana por Área e Raça/Cor (Facetas)}
+\subsubsection{R2.2 -- Mediana por Área e Região}
 
-A Figura~\ref{fig:r22} desagrega a análise por área de conhecimento, com cada faceta representando uma área. O padrão se repete: \textbf{Brancos} e \textbf{Amarelos} lideram em todas as áreas, enquanto \textbf{Pretos} e \textbf{Pardos} ficam nas posições inferiores. O gradiente é mais acentuado em Redação e Matemática.
+A Figura~\ref{fig:r22} confirma o padrão para cada área individualmente: as medianas são praticamente idênticas entre as regiões em todas as cinco áreas.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]{r22}
-    \caption{Mediana por área e raça/cor — facetas (R2.2)}
+    \caption{Mediana por área e região — facetas (R2.2)}
     \label{fig:r22}
 \end{figure}
 
-\subsubsection{R2.3 -- Distribuição de Candidatos por Raça/Cor}
+\subsubsection{R2.3 -- Distribuição de Candidatos por Região}
 
-A Figura~\ref{fig:r23} mostra a composição racial da amostra. A maioria dos candidatos se declara \textbf{Parda} ou \textbf{Branca}.
+A Figura~\ref{fig:r23} mostra a distribuição regional dos candidatos. Nordeste e Sudeste concentram a maior parte da amostra.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{r23}
-    \caption{Distribuição de candidatos por raça/cor (R2.3)}
+    \caption{Distribuição de candidatos por região (R2.3)}
     \label{fig:r23}
 \end{figure}
 
-\subsubsection{R2.4 -- Nota Média Mediana por Raça/Cor e Tipo de Escola}
+\subsubsection{R2.4 -- Nota Média Mediana por Região e Tipo de Escola}
 
-A Figura~\ref{fig:r24} cruza raça/cor com tipo de escola. Dentro de cada grupo racial, candidatos de escolas privadas têm mediana superior, mas o gradiente racial persiste em ambos os segmentos.
+A Figura~\ref{fig:r24} cruza região com tipo de escola. O resultado mais expressivo é a \textbf{consistência nacional do gap público-privado}: em todas as regiões, escolas privadas têm mediana próxima de 620 e públicas próxima de 510.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]{r24}
-    \caption{Nota média mediana por raça/cor e tipo de escola (R2.4)}
+    \caption{Nota média mediana por região e tipo de escola (R2.4)}
     \label{fig:r24}
 \end{figure}
 
 \textbf{Achados:}
 \begin{itemize}
-    \item Candidatos \textbf{Brancos} têm a maior mediana de nota média, enquanto \textbf{Pretos} e \textbf{Pardos} estão nos menores valores, com diferença aproximada de 10 a 15 pontos na nota média.
-    \item O padrão se repete em todas as áreas do conhecimento, com destaque para Matemática e Redação.
-    \item Dentro de cada raça/cor, o tipo de escola continua sendo um fator determinante: mesmo entre Brancos, a mediana de escolas privadas supera a das públicas.
-    \item A análise sugere que as desigualdades raciais no desempenho educacional persistem mesmo quando controladas pelo tipo de escola.
+    \item As diferenças regionais na mediana da nota média são inferiores a 1 ponto, indicando homogeneidade no desempenho entre regiões após os filtros aplicados.
+    \item O gap entre escolas públicas e privadas é consistente em todas as regiões: privadas ~620, públicas ~510 em todo o Brasil.
+    \item Isso sugere que a desigualdade educacional entre redes pública e privada é um fenômeno nacional, não regional.
+    \item As diferenças regionais no ENEM, quando existem, provavelmente se manifestam mais na taxa de participação e presença do que no desempenho dos candidatos presentes em todas as provas.
 \end{itemize}
 
 % ----------------------------------------------------------
@@ -376,17 +376,17 @@ A Figura~\ref{fig:r24} cruza raça/cor com tipo de escola. Dentro de cada grupo 
 
 Os dados revelam que o tipo de escola é fortemente associado ao desempenho no ENEM 2024, com diferenças expressivas em todas as áreas do conhecimento. A diferença mais acentuada ocorre em Redação (180 pontos de mediana) e Matemática (159 pontos), áreas tradicionalmente associadas a maior desigualdade educacional. Linguagens apresenta o menor gap (56 pontos), possivelmente por ser uma área mais dependente de habilidades transversais.
 
-A análise por raça/cor (RQ2) revela um gradiente racial consistente no desempenho, com candidatos Brancos apresentando medianas superiores às de Pretos e Pardos em todas as áreas. Esse gradiente persiste mesmo quando controlado pelo tipo de escola, indicando que as desigualdades raciais no acesso à educação de qualidade são estruturais.
+A análise regional (RQ2) revela que, após os filtros de presença em todas as provas e exclusão de treineiros, as diferenças regionais no desempenho mediano são mínimas (menos de 1 ponto). O achado mais relevante é a consistência nacional do gap entre escolas públicas e privadas: em todas as regiões, a mediana das privadas é aproximadamente 620 e a das públicas 510.
 
 \subsection{Relação entre RQ1 e RQ2}
 
-Os resultados de RQ1 e RQ2, quando analisados em conjunto, revelam duas dimensões de desigualdade que se sobrepõem: o tipo de escola (pública vs. privada) e a raça/cor autodeclarada. A análise cruzada (R2.4) mostra que, dentro de cada grupo racial, o tipo de escola continua sendo um fator determinante, mas as diferenças raciais persistem mesmo entre candidatos do mesmo segmento escolar. Isso sugere que as desigualdades educacionais no Brasil têm raízes tanto na qualidade diferencial do ensino ofertado quanto em fatores estruturais associados à raça.
+Os resultados de RQ1 e RQ2, analisados em conjunto, indicam que o tipo de escola é o principal fator associado ao desempenho no ENEM 2024, e que esse efeito é homogêneo entre as regiões do país. A ausência de diferenças regionais significativas após o controle por presença e tipo de escola sugere que as desigualdades regionais na educação brasileira se manifestam principalmente no acesso e na permanência dos estudantes, e não no desempenho daqueles que conseguem concluir o ensino médio e realizar todas as provas.
 
 \subsection{Limitações}
 
 \begin{itemize}
     \item \textbf{Viés de seleção}: a análise considera apenas candidatos presentes em todas as provas, excluindo ausentes que podem ter perfil sistematicamente diferente.
-    \item \textbf{Dados autodeclarados}: variáveis como raça/cor são auto-reportadas e podem conter imprecisões ou categorizações subjetivas.
+    \item \textbf{Dados autodeclarados}: variáveis como raça/cor e escolaridade dos pais são auto-reportadas e podem conter imprecisões.
     \item \textbf{Correlação $\neq$ causalidade}: os resultados indicam associações, não relações de causa e efeito.
     \item \textbf{Cobertura}: o ENEM não abrange toda a população jovem brasileira — há evasão escolar e candidatos que optam por não realizar o exame.
 \end{itemize}
@@ -396,8 +396,8 @@ Os resultados de RQ1 e RQ2, quando analisados em conjunto, revelam duas dimensõ
 \begin{itemize}
     \item Análise longitudinal comparando edições do ENEM ao longo dos anos para identificar tendências.
     \item Modelagem preditiva de desempenho utilizando regressão múltipla ou algoritmos de machine learning.
-    \item Análise interseccional cruzando raça/cor, tipo de escola e faixa de renda para investigar desigualdades estruturais.
-    \item Modelagem multivariada para quantificar a contribuição relativa de cada fator (escola, raça, região) no desempenho.
+    \item Análise interseccional cruzando região, tipo de escola e faixa de renda para investigar desigualdades estruturais.
+    \item Modelagem multivariada para quantificar a contribuição relativa de cada fator (escola, região, sexo) no desempenho.
 \end{itemize}
 
 \end{document}

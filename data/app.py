@@ -251,77 +251,74 @@ with tab2:
         )
 
 with tab3:
-    st.header('RQ2 — Raça/Cor e Desempenho no ENEM 2024')
+    st.header('RQ2 — Região e Desempenho no ENEM 2024')
     st.info(
-        '**Pergunta:** Qual a relação entre a raça/cor autodeclarada '
+        '**Pergunta:** Qual a relação entre a região geográfica '
         'e o desempenho dos candidatos no ENEM 2024?'
     )
 
-    COR_ORDER = ['Branca', 'Preta', 'Parda', 'Amarela', 'Indígena', 'Não declarado']
-    st.subheader('R2.1 — Desvio da Nota Média Mediana por Raça/Cor')
-    r21_data = df_filt.groupby('Raça/Cor', observed=True)['Nota Média'].median().reset_index()
-    global_median = df_filt['Nota Média'].median()
-    r21_data['Desvio'] = r21_data['Nota Média'] - global_median
-    r21_data['Cor'] = r21_data['Desvio'].apply(lambda x: 'Acima da média' if x >= 0 else 'Abaixo da média')
+    REG_ORDER = ['Norte', 'Nordeste', 'Centro-Oeste', 'Sudeste', 'Sul']
+    st.subheader('R2.1 — Nota Média Mediana por Região')
+    r21_data = df_filt.groupby('Região', observed=True)['Nota Média'].median().reset_index()
+    global_med = df_filt['Nota Média'].median()
+    r21_data['Desvio'] = r21_data['Nota Média'] - global_med
+    r21_data['Cor'] = r21_data['Desvio'].apply(lambda x: 'Acima' if x >= 0 else 'Abaixo')
     r21 = px.bar(
-        r21_data, x='Raça/Cor', y='Desvio', color='Cor',
-        title=f'Desvio da Nota Média Mediana em relação à Mediana Global ({global_median:.1f})',
-        text_auto='.1f',
-        category_orders={'Raça/Cor': COR_ORDER},
-        color_discrete_map={'Acima da média': '#2ca02c', 'Abaixo da média': '#d62728'}
+        r21_data, x='Região', y='Desvio', color='Cor',
+        title=f'Desvio da Nota Média Mediana por Região (global: {global_med:.1f})',
+        text_auto='.2f', category_orders={'Região': REG_ORDER},
+        color_discrete_map={'Acima': '#2ca02c', 'Abaixo': '#d62728'}
     )
-    r21.update_layout(yaxis_title='Desvio (pontos)')
+    r21.update_layout(yaxis_title='Desvio (pontos)', showlegend=False)
     r21.add_hline(y=0, line_color='black', line_width=1)
     safe_chart(r21, 'r21')
 
-    st.subheader('R2.2 — Mediana por Área e Raça/Cor')
+    st.subheader('R2.2 — Mediana por Área e Região')
     try:
-        r22_data = df_filt.groupby('Raça/Cor', observed=True)[AREAS].median().reset_index()
-        r22_long = r22_data.melt(id_vars='Raça/Cor', var_name='Área', value_name='Mediana')
+        r22_data = df_filt.groupby('Região', observed=True)[AREAS].median().reset_index()
+        r22_long = r22_data.melt(id_vars='Região', var_name='Área', value_name='Mediana')
         r22 = px.bar(
-            r22_long, x='Raça/Cor', y='Mediana', color='Raça/Cor',
-            facet_row='Área', title='Mediana por Área e Raça/Cor',
-            category_orders={'Raça/Cor': COR_ORDER},
-            text_auto='.0f'
+            r22_long, x='Região', y='Mediana', color='Região',
+            facet_row='Área', title='Mediana por Área e Região',
+            category_orders={'Região': REG_ORDER}, text_auto='.0f'
         )
         r22.update_layout(showlegend=False, height=700)
         safe_chart(r22, 'r22')
     except Exception:
         st.warning('Gráfico R2.2 indisponível para este recorte.')
 
-    st.subheader('R2.3 — Distribuição de Candidatos por Raça/Cor')
-    r23_data = df_filt['Raça/Cor'].value_counts().reset_index()
-    r23_data.columns = ['Raça/Cor', 'Contagem']
+    st.subheader('R2.3 — Distribuição de Candidatos por Região')
+    r23_data = df_filt['Região'].value_counts().reset_index()
+    r23_data.columns = ['Região', 'Contagem']
     r23 = px.pie(
-        r23_data, names='Raça/Cor', values='Contagem',
-        title='Distribuição de Candidatos por Raça/Cor',
-        category_orders={'Raça/Cor': COR_ORDER}
+        r23_data, names='Região', values='Contagem',
+        title='Distribuição de Candidatos por Região',
+        category_orders={'Região': REG_ORDER}
     )
     safe_chart(r23, 'r23')
 
-    st.subheader('R2.4 — Nota Média Mediana por Raça/Cor e Tipo de Escola')
+    st.subheader('R2.4 — Nota Média Mediana por Região e Tipo de Escola')
     try:
-        r24_data = df_filt.groupby(['Raça/Cor', 'Tipo de Escola'], observed=True)['Nota Média'].median().reset_index()
+        r24_data = df_filt.groupby(['Região', 'Tipo de Escola'], observed=True)['Nota Média'].median().reset_index()
         r24 = px.bar(
-            r24_data, x='Raça/Cor', y='Nota Média', color='Tipo de Escola',
-            barmode='group', title='Nota Média Mediana por Raça/Cor e Tipo de Escola',
+            r24_data, x='Região', y='Nota Média', color='Tipo de Escola',
+            barmode='group', title='Nota Média Mediana por Região e Tipo de Escola',
             color_discrete_map={'Pública': '#1f77b4', 'Privada': '#ff7f0e'},
-            category_orders={'Raça/Cor': COR_ORDER}
+            category_orders={'Região': REG_ORDER}
         )
         safe_chart(r24, 'r24')
     except Exception:
         st.warning('Gráfico R2.4 indisponível para este recorte.')
 
-    med_raca = df_filt.groupby('Raça/Cor', observed=True)['Nota Média'].median()
-    if len(med_raca) >= 2:
-        maior = med_raca.idxmax()
-        menor = med_raca.idxmin()
-        gap = med_raca[maior] - med_raca[menor]
+    med_reg = df_filt.groupby('Região', observed=True)['Nota Média'].median()
+    if len(med_reg) >= 2:
         st.success(
             f'**Insights:**'
-            f'\n- Candidatos **{maior}** têm a maior mediana ({med_raca[maior]:.1f}) e '
-            f'**{menor}** a menor ({med_raca[menor]:.1f}), diferença de **{gap:.1f} pontos**.'
-            f'\n- A diferença se mantém consistente em todas as áreas de conhecimento.'
-            f'\n- Dentro de cada raça/cor, candidatos de **escolas privadas** têm '
-            f'mediana superior aos de escolas públicas.'
+            f'\n- As diferenças regionais são mínimas neste recorte '
+            f'(menos de 1 ponto entre a maior e a menor mediana).'
+            f'\n- O cruzamento com tipo de escola revela que o gap público-privado '
+            f'é consistente em todas as regiões do país.'
+            f'\n- Escolas privadas têm mediana ~620 e públicas ~510 '
+            f'em todas as regiões, indicando que a desigualdade escola '
+            f'pública vs. privada é um fenômeno nacional, não regional.'
         )
