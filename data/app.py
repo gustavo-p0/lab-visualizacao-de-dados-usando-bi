@@ -67,6 +67,13 @@ with tab1:
         'teve **nota válida** em todas as áreas, além de filtrar apenas escolas '
         'públicas e privadas (excluindo não informado).'
     )
+    st.markdown(
+        'Os dados combinam dois microdados do INEP: '
+        '**PARTICIPANTES** (perfil do candidato) e '
+        '**RESULTADOS** (notas por área e presença). '
+        'O cruzamento foi feito pelo índice de linha (sequencial), '
+        'já que ambos os CSVs têm a mesma ordem de inscrição.'
+    )
 
     col_k1, col_k2, col_k3, col_k4 = st.columns(4)
     total = len(df_filt)
